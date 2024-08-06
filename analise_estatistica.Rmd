@@ -1,0 +1,1828 @@
+---
+title: "RESPOSTA TERAPÊUTICA NA MALÁRIA POR Plasmodium vivax: VARIABILIDADE GENÉTICA DE ENZIMAS METABOLIZADORAS DA PRIMAQUINA E O CLEARANCE DE GAMETÓCITOS"
+author: "Sophia Araujo de Moraes"
+date: "2022-05-23"
+output: html_document
+---
+
+```{r pacotes, message=FALSE, warning=FALSE, include=FALSE}
+
+options(OutDec = ",")
+
+#Instlando e carregando pacotes
+loadpackages = function(x){
+  for(i in x){
+    if(!require(i, character.only = TRUE)){
+      install.packages(i, dependencies = TRUE)
+      library(i, character.only = TRUE)
+    }
+  }
+}
+loadpackages(c("ggcorrplot","haven","tinytex","scales","grid","tidyverse","ggpubr","readxl","readr","scales","dplyr","corrplot","devtools","kableExtra","knitr","modelsummary","forcats","sp","ggplot2","rgdal","classInt", "RColorBrewer", "gridExtra",'nortest',"descr","datasets","remotes","stats","car","faraway","MASS","cowplot"))
+
+
+#remotes::install_github("fndemarqui/planex", force = TRUE)
+#library(planex)
+#tinytex::install_tinytex()
+#tinytex::reinstall_tinytex()
+
+```
+
+# Introdução
+ 
+O estudo “Resposta Terapêutica na Malária por Plasmodium vivax: Variabilidade Genética de Enzimas Metabolizadoras da Primaquina e o Clearance de Gametócitos” é uma pesquisa transversal desenvolvida em colaboração com um programa de pós-graduação em Ciências da Saúde, com apoio de uma fundação de renome na área de saúde. Este estudo visa analisar a frequência de polimorfismos nos genes CYP2D6 e POR e investigar como essas variações genéticas afetam a atividade da Primaquina, um medicamento utilizado na prevenção da malária, e o clearance de gametócitos em infecções por P. vivax. O objetivo é determinar se há evidências estatísticas de que polimorfismos nos genes CYP2D6 e POR influenciam a eficácia da Primaquina.
+
+## Objetivos Gerais do estudo
+
+Avaliar a influência de polimorfismos em CYP2D6, principal enzima responsável pela metabolização de PQ, e em POR na atividade da PQ sobre os gametócitos de Plasmodium vivax.
+
+## Objetivos Específicos
+
+1. Analisar a frequência de polimorfismos nos genes CYP2D6 e POR na população de estudo;
+
+2. Investigar a influência dos polimorfismos em CYP2D6 na atividade gametocitocida da PQ em indivíduos infectados por P. vivax;
+
+3. Determinar se polimorfismos no gene POR interferem na atividade gametocitocida da PQ.
+
+
+# Metodologia
+
+## Dados
+
+O banco de dados foi composto por 100 indivíduos e 35 variáveis, totalizando um total de 3.500 observações. Ao total, foram localizados 162 valores ausentes ou não determinados. Esses valores faltantes causaram influências significativas nas análises que serão desenvolvidas posteriormente, tendo em vista que reduziram ainda mais o tamanho amostral, gerando impactos nas análises multivariadas. 
+
+Antes do início das análises, vale salientar que conforme orientação das nossas clientes, as variáveis númericas (Gametócitos femininos no momento inicial (QPVS25D0), Gametícitos feminínos no momento 72 horas (QPVS25D72), Razão de Pvs 25 (QPVS25D72/D0) e Concentração de primaquina (ng/mL) em 72 horas (PQCONC)) foram transformadas na escala logarítimo na base 10. Essas transformações foram realizadas com base na literatura trazida pelas pesquisadoras.
+
+## Descrição das Variáveis:
+
+1. Razão de Pvs 25 (Eliminação de gametócitos): Mede a quantidade de gametócitos femininos maduros após 72 horas em relação ao momento inicial. Em escala logarítmica (base 10), varia de -5,000 a 3,848, onde valores mais altos indicam maior quantidade de gametócitos após 72 horas.
+
+2. Concentração de Primaquina (PQCONC): Quantifica a concentração do fármaco Primaquina no momento final da coleta. Varia de 1,431 a 2,565, com valores mais altos indicando maior concentração de Primaquina.
+
+3. Quantificação de Parasitos:
+- PV18SD0NORM: Quantidade de parasitos no momento inicial, variando de -5,000 a 7,327. Valores mais altos indicam maior concentração de parasitos. 
+- PV18SD72NORM: Quantidade de parasitos após 72 horas, variando de -5,000 a 5,292.
+
+4. Status de Metabolização: 
+- CYP2D6: Classificado como "Normal" ou "Alterada".
+- POR: Classificado como "Mutada" ou "Não-mutada".
+- CYP2D6/POR Conjunto: Classificado em quatro categorias:"Normal/Não-mutada", "Normal/Mutada", "Alterada/Não-mutada", "Alterada/Mutada".
+- Fenótipo CYP2D6: Classificado como "gPM" (metabolizador nulo), "gIM" (metabolizador intermediário), "gNM-S" (metabolização reduzida), "gNM-F" (metabolização normal), e "gUM" (metabolização ultrarrápida).
+
+6. Status dos Gametócitos Masculinos:
+- PVS48D0: Presença ou ausência de gametócitos masculinos no início, classificado como "Positivo" ou "Negativo".
+- PVS48D72: Presença ou ausência de gametócitos masculinos após 72 horas, classificado como "Positivo" ou "Negativo".
+
+## Análise Exploratória
+
+Realizada com objetivo de conhecer as características e identificar padrões nos dados. Parte desse processo foi desenvolvido por meio da obtenção de medidas resumo (média, mediana, desvio padrão, máximo e mínimo), para as variáveis numéricas, e frequência relativa de cada um dos níveis das variáveis categóricas. Além disso, foram elaborados gráficos de dispersão, boxplots e histogramas visando um melhor entendimento das medidas de posição, tendência central e da disperão dos dados.
+
+Posteriormente, foi realizado o Teste de Shapiro-Wilk, para as variáveis numéricas (Idade, PQCONC, QPVS25D0, QPVS25D72, QPVS25D72/D0, PV18SD0NORM e PV18SD72NORM), com o propósito de verificar quais seguiam a distribuição normal. Por meio desse teste foi possível nortear os testes estatísticos a serem desenvolvidos, visando responder as perguntas formuladas pelas pesquisadoras.
+
+## Procedimentos estatísticos
+
+A estruturação dos resultados foi seguida com base nos seguintes questinamentos:
+
+- Indivíduos com status CYP2D6 alterada/POR mutada possuem menor redução de Pvs25 (72 horas para 0 horas)? (Item 1)
+
+- A Parasitemia inicial (PV18SD0NORM) está associada com a quantidade de gametócitos?
+
+- A Parasitemia inicial (PV18SD0NORM) é um fator de confusão nas análises de associação entre status CYP/POR e Eliminação de gametócitos realizadas no Item 1?
+
+- O Gênero e Idade dos pacientes são fatores de confusão nas análises de associação entre status CYP/POR e Eliminação de gametócitos realizadas no Item 1?
+
+- A Concentração de primaquina em 72 horas (PQCONC) é influenciada pelo fenótipo de CYP2D6 (CYP2D6FENOTIPO), POR (PORMUT) e o status conjunto CYP2D6/POR (CYP2D6POR)?
+
+- Há correlação entre as variáveis: Concentração de primaquina (PQCONC) com a redução de Pvs25 (QPVS25D72/D0)?
+
+- Os Status de metabolização CYP2D6 (CYP2D6CAT) e os Status de mutação do gene POR (PORMUT) influenciam no número de recorrência
+clínica (NRECORRENCIA)?
+
+- Há associação entre as variáveis: Indicativo de presença ou ausência de gametócitos masculinos em 0 horas (PVS48D0) e Indicativo de presença ou ausência de gametócitos masculinos em 72 horas (PVS48D72) estão associadas com os status de metabolização conjunto e individual CYP2D6/POR?
+
+Os testes de hipóteses  e modelos sintetizados para responder as perguntas elaboradas pelas pesquisadoras foram:
+
+- Teste Qui-quadrado;
+
+- Teste t-pareado;
+
+- Teste de Kruskal Wallis;
+
+- Teste de Mann-Whitney;
+
+- Teste de Correlação de Spearman;
+
+- Modelo de regressão linear múltipla.
+
+Para avaliar se há influência das variáveis levatadas pelas pesquisadoras foram ajustados modelos de regressões múltiplas. Os modelos ajustados foram sintetizados para explicar: Razão de Pvs 25 e Concentração de Primaquina em 72 horas.
+
+Vale salientar que em todas as análises foram consideradas um nível de significância de 5% e utilizou-se o software R em sua extensão RStudio para obtenção dos resultados.
+
+# Resultados
+
+Devido à natureza sensível dos dados utilizados, que envolvem informações de saúde de indivíduos participantes do estudo. Nese tópico de resultados será apresentado apenas o código, sem a interpretação dos resultados.
+
+```{r fig.align="center", message=FALSE, warning=FALSE, include=FALSE}
+bd <- read_excel("bd.xlsx")
+bd<- bd[,c(-13:-18)] #colunas com muitos NAs, e não serão utilizadas na análise
+bd$NRECORRENCIA <- as.numeric(bd$NRECORRENCIA)
+bd_new<-bd[,6]
+bd<-bd[,-6]
+
+#transformação das colunas para numeric
+bd$IDADE <- as.numeric(bd$IDADE)
+bd$CYP2D6AS <- as.numeric(bd$CYP2D6AS)
+bd$PQCONC <- as.numeric(bd$PQCONC)
+bd$QPVS25D0 <- as.numeric(bd$QPVS25D0)
+bd$QPVS25D72 <- as.numeric(bd$QPVS25D72)
+bd$`QPVS25D72/D0`<- as.numeric(bd$`QPVS25D72/D0`)
+bd$PV18SD0NORM <- as.numeric(bd$PV18SD0NORM)
+bd$PV18SD72NORM <- as.numeric(bd$PV18SD72NORM)
+
+bd<-bd %>% mutate_if(is.numeric, funs(replace(., .<0.00001, 0.00001)))
+
+bd[,29]<- bd_new
+
+bd$PQCONC<-log(bd$PQCONC,10)
+bd$QPVS25D0<-log(bd$QPVS25D0,10)
+bd$QPVS25D72<- log(bd$QPVS25D72,10)
+bd$`QPVS25D72/D0`<- log(bd$`QPVS25D72/D0`,10)
+bd$PV18SD0NORM <- log(bd$PV18SD0NORM,10)
+bd$PV18SD72NORM <- log(bd$PV18SD72NORM,10)
+
+#transformando em logaritmo na base 10 as colunas
+
+bd<- bd[,c(-13,-16,-19,-26,-27)] #excluindo colunas: logaritimo na base 10 (que haviam sido transformadas de forma incorreta)
+
+novo_bd<-bd %>% select_if(is.numeric) %>% head()
+
+attach(novo_bd)
+#names(novo_bd)
+
+novo_bd<- as.data.frame(novo_bd)
+```
+
+
+```{r fig.align="center", message=FALSE, warning=FALSE, include=FALSE}
+#teste de normalidade
+
+p1=shapiro.test(novo_bd$IDADE)$p.value
+p2=shapiro.test(novo_bd$NRECORRENCIA)$p.value
+p4= shapiro.test(novo_bd$PQCONC)$p.value
+p5=shapiro.test(novo_bd$QPVS25D0)$p.value
+p6= shapiro.test(novo_bd$QPVS25D72)$p.value
+p7=shapiro.test(novo_bd$`QPVS25D72/D0`)$p.value
+p8=shapiro.test(novo_bd$PV18SD0NORM)$p.value
+p9=shapiro.test(novo_bd$PV18SD72NORM)$p.value
+
+variaveis = c("Idade", "Recorrência de malária", "Concentração de primaquina (72 horas)", "Quantificação absoluta de gametócitos femininos (momento inicial)", "Quantificação absoluta de gametócitos femininos (72 horas)", "Razão de Pvs25 em 72 horas por 0 horas", "Quantificação absoluta de parasitos (momento inicial)","Quantificação absoluta de parasitos (72 horas)")
+
+pvalores = c(p1,p2,p4,p5,p6,p7,p8,p9)
+
+table1 = data.frame(variaveis, pvalores)
+names(table1) = c("Variáveis",  "P-Valores")
+
+table1 %>% 
+  dplyr::mutate_if(is.numeric, funs(as.character(signif(., 3)))) %>%
+  kbl(caption = "Teste de normalidade (shapiro Wilk)") %>%
+  kable_classic_2(full_width = F) %>%
+  kable_styling(latex_options = "HOLD_position")
+
+```
+
+
+Hipóteses:
+
+ $H_0$: Não há diferença entre as médias “Quantificação absoluta de ga-
+metócitos femininos maduros em 0 horas” e “Quantificação absoluta de gametócitos femininos maduros em72 horas”;
+
+ $H_1$: Média inicial de “Quantificação absoluta de ga-
+metócitos femininos maduros em 0 horas” > média final e “Quantificação absoluta de gametócitos femininos maduros em 72 horas” (teste unilateral).
+
+```{r fig.align='center', message=FALSE, warning=FALSE, include=FALSE}
+# Teste t pareado
+#ps realizei transformação de gatcitos: colunas não normais
+
+d=bd$QPVS25D0-bd$QPVS25D72
+testet1=t.test(d,alternative= "greater") #teste unilateral visando averiguar se média inicial> media final
+
+pvalor1 = testet1$p.value #3.10176e-20
+
+```
+
+
+```{r echo=FALSE, fig.height=4, fig.width= 5, message=FALSE, warning=FALSE,fig.align='center'}
+hist1 = ggplot(bd, aes(bd$QPVS25D0)) + geom_histogram(aes(y = ..density..),
+                                                    bins = 8,
+                                                    fill = '#9cd1f0') +
+  labs(title = "Momento inicial", x='Gametócitos Femininos') +
+  theme(plot.title=element_text(hjust = 0.5, size=10))+ theme(axis.title.y = element_blank()) + theme(axis.title.x.bottom = element_blank())
+
+
+
+hist2 = ggplot(bd, aes(bd$QPVS25D72)) + geom_histogram(aes(y = ..density..),
+                                                    bins = 8,
+                                                    fill = '#368196') +
+  labs(title = "Após 72", x='Gametócitos Femininos') +
+  theme(plot.title=element_text(hjust = 0.5, size=10))+ theme(axis.title.y = element_blank()) + theme(axis.title.x.bottom = element_blank())
+
+
+gridExtra::grid.arrange(hist1, hist2, nrow = 1, left = textGrob("Densidade", rot = 90, vjust = 1, gp=gpar(fontsize=10)), bottom =textGrob("Gametócitos Femininos", gp=gpar(fontsize=10)),top =grid::textGrob(("Figura 1 - Análise gametócitos femininos"), x = 0, hjust = 0,gp = gpar(fontsize = 10)) )
+```
+
+
+## Análise descritiva
+
+Foi sintetizada uma análise descritiva para compreender melhor o comportamento das variáveis do banco de dados. Para isto foram realizadas análises gráficas, tabelas com medidas resumo ou teste de hipóteses cruzando variáveis de interesse, como pode-se ver a seguir:
+ 
+
+```{r echo=FALSE, fig.align="center", fig.height=3.5, fig.width=5, message=FALSE, warning=FALSE}
+bd$SEXO<-as.factor(bd$SEXO)
+bd$SEXO<-factor(bd$SEXO, levels=c("1","2"),labels=c("Masculino","Feminino"))
+
+attach(bd)
+ggplot(na.omit(bd),aes(x = SEXO, y = IDADE, fill= SEXO)) +
+    geom_boxplot(alpha = 0.7) + labs(y = "Idade",
+       x = "Sexo", fill="Sexo",
+       title = "Figura 2- Gráfico de boxplot de idade por sexo",size=10) +  scale_fill_brewer(palette="BuPu") + theme(plot.title = element_text(size=10))
+
+```
+
+```{r echo=FALSE, fig.align="center", message=FALSE, warning=FALSE}
+bd_sum <- na.omit(bd) %>%
+  group_by(SEXO) %>%
+  summarize(Min= min(IDADE), Max= max(IDADE), Mean = mean(IDADE),MEDIANA= median(IDADE), SD = sd(IDADE))%>%
+  ungroup()
+
+
+kable(x = bd_sum,
+      col.names = c("Sexo","Mínimo", "Máximo","Média","Mediana","Desvio Padrão"),
+      caption = "Anáise descritiva das variáveis Sexo e Idade", digits = 4) %>%
+  kable_classic(full_width = F,font_size = 10) %>%
+  add_header_above(c(" " = 1, "Idade" = 5),bold = TRUE) %>%
+  kable_styling(latex_options = "HOLD_position") %>%
+  row_spec(0, bold = TRUE, hline_after = TRUE, font_size = 11, align = 'c')
+
+```
+
+Dessa forma, visando responder o seguinte questionamento: "A média das idades, para os níveis da variável sexo são iguais?"foi elaborado um teste de hipótese do teste Mann-Whitney para comparação de medianas de dois grupos. Desse modo assumimos como hipóteses de interesse:
+
+$H_0$: A mediana da Idade masculina é igual à mediana da Idade feminina;
+
+$H_1$: A mediana da Idade masculina é diferente à mediana da Idade feminina.
+
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+#TESTANDO PRESSUPOSTO DE NORMALIDADE
+shapiro.test(bd$IDADE[bd$SEXO == "Feminino"]) # p-value = 0.1277, não rejeito H0 DE NORMALIDADE
+shapiro.test(bd$IDADE[bd$SEXO == "Masculino"])# P VALOR ( 0.0003136) REJEITA HIPÓTESE NULA DE NORMALIDADE
+will=wilcox.test(IDADE~SEXO, data = bd) #teste BILATERAL visando averiguar se média inicial=! media final
+
+pppvaluewill = will$p.value
+```
+
+De maneira análoga, analisou-se a Recorrência clínica de malária com relação ao Sexo, Local de infecção, Ocupação e Fenótipo CYP. Em todas as análises, realizou-se testes de independência qui- quadrado, assumindo as seguintes hipóteses:
+
+$H_0$ : A variável analisada não está associada com a Recorrência clínica de malária (são independentes);
+
+$H_1$ : A variável analisada está associada com a Recorrência clínica de malária (são dependentes).
+
+```{r testeindependencia, echo=FALSE, message=FALSE, warning=FALSE}
+#genero
+table3= table(bd$SEXO,bd$RECIDIVACAT)
+testedeindep1 = chisq.test(table3)
+pvalor3 = testedeindep1$p.value
+
+attach(bd)
+
+#LOCAL DE INFECÇÃO (PROVLOCALINFEC)
+bd$PROVLOCALINFEC<-as.factor(bd$PROVLOCALINFEC)
+table4= table(bd$PROVLOCALINFEC,bd$RECIDIVACAT)
+testedeindep2 = chisq.test(table4)
+pvalor4 = testedeindep2$p.value
+
+#OCUPACAO
+bd$OCUPACAO<-as.factor(bd$OCUPACAO)
+table5= table(bd$OCUPACAO,bd$RECIDIVACAT)
+testedeindep3 = chisq.test(table5)
+pvalor5 = testedeindep3$p.value
+
+#fENOTIPO CYP
+bd$CYP2D6FENOTIPO<-as.factor(bd$CYP2D6FENOTIPO)
+table6= table(bd$CYP2D6FENOTIPO,bd$RECIDIVACAT)
+testedeindep4 = chisq.test(table6)
+pvalor6 = testedeindep4$p.value
+
+variaveis = c("Sexo", "Provável local de infecção", "Ocupação", "Fenótipo CYP2D6")
+pvalores = c(pvalor3, pvalor4, pvalor5, pvalor6)
+
+testes1 = data.frame(variaveis, pvalores)
+names(testes1) = c("Variáveis", "P-Valores")
+testes1 %>% 
+  dplyr::mutate_if(is.numeric, funs(as.character(signif(., 3)))) %>%
+  kbl(caption = "Teste de independencia qui-quadrado com a variável Recorrência de Malária") %>%
+  kable_classic_2(full_width = F) %>%
+  kable_styling(latex_options = "HOLD_position")
+
+```
+
+```{r echo=FALSE, fig.align="center", fig.height=3.5, fig.width=5, message=FALSE, warning=FALSE}
+bd$RECIDIVACAT<-as.factor(bd$RECIDIVACAT)
+bd$RECIDIVACAT<-factor(bd$RECIDIVACAT, levels=c("NR","R","MR"),labels=c("Sem ocorrência","Uma recorrência", "Múltiplas recorrências"))
+
+attach(bd)
+ggplot(bd, aes(SEXO, fill = RECIDIVACAT)) +
+  geom_bar( color = '#cccccc',position="fill") +
+  scale_fill_manual(values=c('#9cd1f0','#368196',"#131047")) +
+  labs(title = "Figura 3 - Gráfico de barra para Recorrência clínica de malária\ncom relação ao Sexo",size=10,x= "Sexo" ,y = "Percentual",fill = "Recorrência de malária") + theme(plot.title = element_text(size=10))
+
+
+```
+
+```{r echo=FALSE, fig.align="center", fig.height=3.5, fig.width=5, message=FALSE, warning=FALSE}
+bd$CYP2D6FENOTIPO<-as.factor(bd$CYP2D6FENOTIPO)
+new_df <- subset(bd, CYP2D6FENOTIPO!= "ND")
+new_df$CYP2D6CAT<-factor(new_df$CYP2D6FENOTIPO, levels=c("gIM","gNM-F","gNM-S","gPM","gUM"),labels=c("gIM", "gNM-F","gNM-S","gPM","gUM"))
+attach(new_df)
+
+ggplot(new_df, aes(CYP2D6FENOTIPO, fill = RECIDIVACAT)) +
+  geom_bar( color = '#cccccc',position="fill") +  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  scale_fill_manual(values=c('#9cd1f0','#368196',"#131047")) +
+  labs(title = "Figura 4 - Gráfico de barra para Recorrência clínica de malária\ncom relação o Fenótipo de CYP2D6",size=10,x= "Fenótipo CYP2D6" ,y = "Percentual",fill = "Recorrência de malária") + theme(plot.title = element_text(size=10))
+  
+
+```
+
+
+```{r echo=FALSE, fig.align="center", fig.height=3.5, fig.width=5, message=FALSE, warning=FALSE}
+
+bd$PROVLOCALINFEC<-as.factor(bd$PROVLOCALINFEC)
+
+ggplot(bd, aes(PROVLOCALINFEC, fill = RECIDIVACAT)) +
+  geom_bar( color = '#cccccc',position="fill") +
+  scale_fill_manual(values=c('#9cd1f0','#368196',"#131047")) + 
+  labs(title = "Figura 5 - Gráfico de barra para Recorrência clínica de malária\ncom relação ao Provável local de infecção",size=10,x= "Local de infecção" ,y = "Percentual",fill = "Provável local de infecção") + theme(plot.title = element_text(size=10))
+
+```
+
+
+## Pergunta 1
+
+" Indivíduos com status CYP2D6 alterada/POR mutada possuem menor redução de Pvs25 (0 horas para 72 horas; QPVS25D72/D0 ou QPVS25LOGD72/D0; alternativamente pode-se utilizar as variáveis medidas em cada tempo: QPVS25D0LOG e QPVS25D72LOG) quando comparados com indivíduos CYP2D6 normal/POR não-mutada?" - Texto elaborado pelas pesquisadoras.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE,fig.align="center"}
+##tratamento banco de dados
+bd$CYP2D6POR<-as.factor(bd$CYP2D6POR)
+new_df2 <- subset(bd, CYP2D6POR!= "ND")
+new_df2$CYP2D6POR<-factor(new_df2$CYP2D6POR, levels=c("NN","AN","NM","AM"),labels=c("Normal/Não-mutada","Alterada/Não-mutada","Normal/Mutada","Alterada/Mutada"))
+
+mat2 = matrix(ncol = 3, nrow = 100) #97 pois retirou 3 infos ND
+df2=data.frame(mat2)
+df2[,1]<- bd$CYP2D6CAT 
+df2[,2]<- bd$`QPVS25D72/D0`
+df2[,3]<- bd$PV18SD0NORM
+df2[,4]<- bd$RECIDIVACAT
+df2[,5]<-bd$PVS48D0
+df2[,6]<-bd$PVS48D72
+
+df2 <- subset(df2, X1!= "ND")
+df2$X1<- as.factor(df2$X1)
+df2$X1<-factor(df2$X1, levels=c("ALTERADA","NORMAL"),labels=c("Atividade alterada","Atividade normal"))
+
+
+mat3 = matrix(ncol = 3, nrow = 100) #97 pois retirou 3 infos ND
+df3=data.frame(mat3)
+df3[,1]<- bd$PORMUT 
+df3[,2]<- bd$`QPVS25D72/D0`
+df3[,3]<- bd$PV18SD0NORM #quantidade de parasitas no momento incial (escala logaritmo na base 10)
+df3[,4]<- bd$RECIDIVACAT
+df3[,5]<-bd$PVS48D0
+df3[,6]<-bd$PVS48D72
+df3 <- subset(df3, X1!= "ND")
+df3$X1<- as.factor(df3$X1)
+df3$X1<-factor(df3$X1, levels=c("MUTADA","NAOMUT"),labels=c("Presença de mutação","Ausência de mutação"))
+
+
+bd_sum33 <- na.omit(new_df2) %>%
+  group_by(CYP2D6POR) %>%
+  summarize(Min= min(`QPVS25D72/D0`,na.rm= T), Max= max(`QPVS25D72/D0`, na.rm= T),Mean = mean(`QPVS25D72/D0`, na.rm = TRUE),Median=median(`QPVS25D72/D0`, na.rm= T),SD = sd(`QPVS25D72/D0`, na.rm = TRUE)) %>%
+  ungroup()
+
+bd_sum33<- as.data.frame(bd_sum33)
+bd_sum33<-plyr::rename(bd_sum33, c("CYP2D6POR"="col"))
+
+bd_sum44 <- df2 %>%
+  group_by(X1) %>%
+  summarize(Min= min(X2,na.rm= T), Max= max(X2, na.rm= T),Mean = mean(X2, na.rm = TRUE),Median=median(X2, na.rm= T),SD = sd(X2, na.rm = TRUE)) %>%
+  ungroup()
+
+
+bd_sum44<- as.data.frame(bd_sum44)
+bd_sum44<-plyr::rename(bd_sum44, c("X1"="col"))
+
+bd_sum55 <- df3 %>%
+  group_by(X1) %>%
+  summarize(Min= min(X2,na.rm= T), Max= max(X2, na.rm= T),Mean = mean(X2, na.rm = TRUE), Median=median(X2, na.rm= T), SD = sd(X2, na.rm = TRUE))%>%
+  ungroup()
+
+bd_sum55<- as.data.frame(bd_sum55)
+bd_sum55<-plyr::rename(bd_sum55, c("X1"="col"))
+
+
+quickmerge <- function(df1, df2) {
+  df1.names <- names(df1)
+  df2.names <- names(df2)
+  df2.add <- setdiff(df1.names, df2.names)
+  df1.add <- setdiff(df2.names, df1.names)
+  if(length(df2.add) > 0) {
+    for(i in 1:length(df2.add)) {
+      df2[df2.add[i]] <- NA
+    }
+  }
+  if(length(df1.add) > 0) {
+    for(i in 1:length(df1.add)) {
+      df1[df1.add[i]] <- NA
+    }
+  }
+  return(rbind(df1, df2))
+}
+
+z2 <- quickmerge(bd_sum33, bd_sum44)
+
+z22 <- quickmerge(z2, bd_sum55)
+
+z22[,-1]<- (round(z22[,-1],4)) #ARREDONDADO PARA 2 CASAS DECIMAIS
+
+varios_bd2<-z22
+
+##tabela analise descritiva
+attach(varios_bd2)
+colnames(varios_bd2)<-c("Status", "Mínimo", "Máximo","Média","Mediana","Desvio Padrão")
+
+varios_bd2 %>%
+  kbl(caption="Análise descritiva da variável Razão de Pvs25") %>%
+  add_header_above(c(" " = 1, "Eliminação de gametócitos" = 5),bold = TRUE) %>%
+  pack_rows(index = c("Metabolização CYP2D6 e POR" = 4, "Metabolização CYP2D6 " = 2, "Mutação do gene POR" = 2)) %>%
+  kable_classic(full_width = F,font_size = 10) %>%
+  kable_styling(latex_options = "HOLD_position") %>%
+  row_spec(0, bold = TRUE, italic = TRUE, hline_after = TRUE, font_size = 10, align = "c")
+
+```
+
+Além disso, para melhor visualização dos dados, sintetizou-se os gráficos a seguir:
+
+```{r echo=FALSE, fig.align="center", fig.height=3.5, fig.width=5, message=FALSE, warning=FALSE}
+graff1<-ggplot(new_df2, aes(x = CYP2D6POR, y = new_df2$`QPVS25D72/D0` , fill=CYP2D6POR )) + 
+  geom_boxplot(alpha = 0.7)+ labs(y = "Razão de Pvs25", x = "Status de metabolização", fill= "CYP e POR",
+       title = "Figura 6 - Gráfico de boxplot da Razão de Pvs25 em relação\nao status de metabolização conjunto CYP e POR",size=10) +  scale_fill_brewer(palette="BuPu")
+graff1 + theme(plot.title = element_text(size=10))+
+  theme(axis.text.x = element_blank(),
+        axis.ticks.x = element_blank())
+
+```
+
+
+```{r echo=FALSE, fig.align="center", fig.height=3.5, fig.width=5, message=FALSE, warning=FALSE}
+graff2<-ggplot(df2, aes(x = X1, y = X2 , fill=X1 )) + 
+  geom_boxplot(alpha = 0.7)+ labs(y = "Razão de Pvs25", x = "Status de Metabolização", fill= "CYP2D6",       title = "Figura 7 - Gráfico de boxplot da Razão de Pvs25 em relação\nao status de metabolização CYP2D6",size=10) +  scale_fill_brewer(palette="BuPu")
+graff2 + theme(plot.title = element_text(size=10))+
+  theme(axis.text.x = element_blank(),
+        axis.ticks.x = element_blank())
+
+
+
+```
+
+
+```{r echo=FALSE, fig.align="center", fig.height=3.5, fig.width=5, message=FALSE, warning=FALSE}
+graff3<-ggplot(df3, aes(x = X1, y = X2 , fill=X1 )) + 
+  geom_boxplot(alpha = 0.7)+ labs(y = "Razão de Pvs25", x = "Status de mutação", fill= "POR",   title = "Figura 8 - Gráfico de boxplot da Razão de Pvs25 em relação\nao status de mutação do gene POR",size=10) +  scale_fill_brewer(palette="BuPu")
+graff3 + theme(plot.title = element_text(size=10))+
+  theme(axis.text.x = element_blank(),
+        axis.ticks.x = element_blank())
+
+```
+
+Hipóteses de interesse:
+
+**1º teste)** Teste de Kruskall-Wallis:
+
+$H_0$: As Razões médias de Pvs25 para cada categória dos Status de metabolização conjunto são iguais;
+
+$H_1$: As Razões médias de Pvs25, para pelo menos uma das categorias dos Status de metabolização conjunto,é diferente;
+
+**2º teste)** Teste de Mann-Whitney:
+
+$H_0$: As Razões medianas de Pvs25 para cada categória dos Status de metabolização individual de CYP2D6 são iguais;
+
+$H_1$: As Razões medianas de Pvs25 para cada categória dos Status de metabolização individual de CYP2D6 são iguais;
+
+**3º teste)** Teste de Mann-Whitney:
+
+$H_0$: As Razões medianas de Pvs25 para cada categória dos Status de mutação individual do gene POR são iguais;
+
+$H_1$: As Razões medianas de Pvs25 para cada categória dos Status demutação individual do gene POR são diferentes;
+
+```{r echo=FALSE, fig.align="center", message=FALSE, warning=FALSE}
+###conjunta
+testedekruskal1_quest2=kruskal.test(`QPVS25D72/D0` ~ CYP2D6POR, data =na.omit (new_df2))
+testedekruskal1_quest2_pvalor= testedekruskal1_quest2$p.value
+testedekruskal1_quest2_method= testedekruskal1_quest2$method
+
+
+#TESTANDO PRESSUPOSTO DE NORMALIDADE
+#shapiro.test(df2$X2[df2$X1 == "Atividade alterada"])- p valor 0.175
+#shapiro.test(df2$X2[df2$X1 == "Atividade normal"])- p valor 0.0003462, rejeita-se a hipotese nula de normalidade
+
+
+###individual
+#cyp
+testede2_quest2=wilcox.test(X2~X1, data = df2) 
+testede2_quest2_PVALOR = testede2_quest2$p.value
+testede2_quest2_method = testede2_quest2$method
+##por
+teste3_quest2=wilcox.test(X2 ~ X1, data = df3)
+teste3_quest2_PVALOR = teste3_quest2$p.value
+teste3_quest2_method = teste3_quest2$method
+
+
+######################
+
+methodos_kruskal_man_quest2<- c("Teste de Kruskal-Wallis","Teste de Mann-Whitney","Teste de Mann-Whitney")
+variaveis_quest2 = c("CYP2D6 e POR","CYP2D6", "POR")
+PVALOR_quest2= c(testedekruskal1_quest2_pvalor,testede2_quest2_PVALOR,teste3_quest2_PVALOR)
+
+tabela_tetste_quest2 = data.frame(methodos_kruskal_man_quest2,variaveis_quest2,PVALOR_quest2)
+names(tabela_tetste_quest2) = c("Métodos","Variáveis","P-Valores")
+tabela_tetste_quest2 %>% 
+  dplyr::mutate_if(is.numeric, funs(as.character(signif(., 3)))) %>%
+  kbl(caption = "Teste de médias e medianas para Razão de Pvs 25") %>%
+  kable_classic_2(full_width = F) %>%
+  kable_styling(latex_options = "HOLD_position")
+```
+
+## Pergunta 2
+
+"Avaliar se a parasitemia inicial (PV18SD0NORM ou PV18SD0NORMLOG) está associada com a quantidade de gametócitos e se é um fator de confusão nas análises de associação entre status CYP/POR e eliminação de gametócitos realizadas no item 1." - Texto elaborado pelas pesquisadoras.
+
+
+Com o intuito de compreender o comportamento das variáveis numéricas, envolvidas na pergunta, foram elaborados histogramas sobre as variáveis Razão de Pvs25 e Quantidade de parasitos no momento inicial:
+
+```{r echo=FALSE, message=FALSE,fig.height= 4, fig.width=6, warning=FALSE,fig.align="center"}
+pvs25hist<-ggplot(bd, aes(x= `QPVS25D72/D0`)) + geom_histogram(aes(y = ..density..),
+                                                    bins = 8,
+                                                    fill = "#69b3a2", color="#e9ecef") + labs(title = "Figura 9 - Histograma da Razão\nde Pvs25",size=10,y = "Densidade", x="Razão de Pvs25")+ theme(plot.title = element_text(size=10))+ theme(plot.title=element_text()) + scale_x_continuous(breaks = c(-5.000:4, 2))
+
+
+
+parasitahist<-ggplot(bd, aes(x= PV18SD0NORM)) + geom_histogram(aes(y = ..density..),
+                                                    bins = 8,
+                                                    fill = "#69b3a2", color="#e9ecef") + labs(title = "Figura 10 - Histograma da Quantidade\nde parasitos no momento inicial",size=10,y = "Densidade", x="Parasitos")+ theme(plot.title = element_text(size=10))+ theme(plot.title=element_text())+ scale_x_continuous(breaks = c(-5.000:8, 3))
+
+
+gridExtra::grid.arrange(pvs25hist, parasitahist, ncol= 2)
+```
+
+Gráficos de dispersão para visualização da relação entre as variáveis Razão de Pvs25 (Eliminação de gametócitos) e Quantidade de Parasitos (0 horas), com relação aos status de metabolização conjunto e individuais:
+
+```{r echo=FALSE,fig.height=3.5, fig.width=5, warning=FALSE,fig.align="center", message=FALSE}
+# variável considerada: PV18SD0NORMLOG
+primeiro_disp<-ggplot(new_df2, aes(x = new_df2$PV18SD0NORM, y = new_df2$`QPVS25D72/D0`, na.rm=T)) +
+  geom_point(aes(color= new_df2$CYP2D6POR))+  labs(title = "Figura 11 - Gráfico de dispersão de Parasitos no momento inicial\ne da Razão de Pvs25, com relação ao status de metabolização conjunto",size=10, y = "Razão de Pvs 25", colour  = "CYP2D6 e POR",
+       x = "Parasitos")+ theme(plot.title = element_text(size=10))
+
+##########################
+#Grafico 2: analise individual- status de metabolização cyp
+#X1= STATUS DE METABOLIZAÇÃO CYP
+#X2=`QPVS25LOGD72/D0`
+#X3=PV18SD0NORMLOG
+segundo_disp<-ggplot(df2, aes(x = df2$X3, y = df2$X2, na.rm=T, group = df2$X1)) +
+  geom_point(aes(color= df2$X1))+  labs(title = "Figura 12 - Gráfico de dispersão de  Parasitos no momento inicial\ne da Razão de Pvs25, com relação ao status CYP2D6",size=10, y = "Razão de Pvs 25", colour  = "CYP2D6",x = "Parasitos")+ theme(plot.title = element_text(size=10))
+
+  
+
+####################
+#Gráfico 3: analise individual- mutação do gene POR
+terca_disp<-ggplot(df3, aes(x = df3$X3, y = df3$X2, group = df3$X1)) +
+  geom_point(aes(color= df3$X1))+ labs(title = "Figura 13 - Gráfico de dispersão de  Parasitos no momento inicial\ne da Razão de Pvs25, com relação ao status POR",size=10, y = "Gametócitos", colour = "POR",
+       x = "Parasitos") + theme(plot.title = element_text(size=10))
+
+
+primeiro_disp
+
+```
+
+
+```{r echo=FALSE,fig.height=3.5, fig.width=5,fig.align="center", message=FALSE, warning=FALSE}
+# variável considerada: PV18SD0NORMLOG
+segundo_disp
+```
+
+
+```{r echo=FALSE,fig.height=3.5, fig.width=5,fig.align="center", message=FALSE, warning=FALSE}
+# variável considerada: PV18SD0NORMLOG
+terca_disp
+```
+
+Visando testar estatisticamente se exite uma associação entre as variáveis de interesse, postulou-se testes de independencia qui-quadrado, teste de correlação e testes de médias/medianas, os quais possuem as seguintes hipótese de interesse:
+
+**1º teste)** Teste qui-quadrado de independência
+
+Esse teste é utilizado para verificar se existe associação entre duas variáveis qualitativas:
+
+Hipóteses:
+
+$H_0$: As variáveis Status de metabolização CYP2D6  e Status de mutação do gene POR (PORMUT)  são independentes
+
+$H_1$: As variáveis Status de metabolização CYP2D6  e Status de mutação do gene POR (PORMUT) estão associadas 
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+#os pressupostos, foram verificados
+# Status de metabolização do indivíduo em relação a CYP2D6
+bd$CYP2D6CAT<-as.factor(bd$CYP2D6CAT)
+new_df3 <- subset(bd, CYP2D6CAT!= "ND")
+new_df3$CYP2D6CAT<-factor(new_df3$CYP2D6CAT, levels=c("ALTERADA","NORMAL"),labels=c("Atividade alterada","Atividade normal"))
+
+# Presença ou ausência de mutação no gene POR
+bd$PORMUT<-as.factor(bd$PORMUT)
+new_df4 <- subset(bd, PORMUT!= "ND")
+new_df4$PORMUT<-factor(new_df4$PORMUT, levels=c("MUTADA","NAOMUT"),labels=c("Presença de mutação","Ausência de mutação"))
+
+tabela=table(new_df3$CYP2D6CAT, new_df3$PORMUT)
+
+```
+
+**2º teste)** Teste de Correlação de Spearman 
+
+Esse teste é utilizado quando não existe normalidade e/ou não existe relação linear, deve ser usado quando não se deseja utilizar nenhuma suposição de normalidade ou da presença de qualquer outra distribuição para a variável ou para a estatística de teste
+
+Hipóteses:
+
+$H_0$: A correlação entre as variáveis, Eliminação de gametócitos  e quantificação de parasitos no momento inicial,  é zero/nula;
+
+$H_1$: A correlação entre as variáveis, Eliminação de gametócitos  e quantificação de parasitos no momento inicial, não é nula.
+  
+**3º teste)** Teste de Kruskal Wallis 
+
+Hipóteses:
+
+$H_0$: Se em todos os níveis CYP2D6 e POR conjunto as médias de Gametócitos são iguais;
+
+$H_1$: Se em pelo menos um nível CYP2D6 e POR conjunto as médias de Gametócitos  é diferente.
+
+**4º teste)** Teste de Kruskal Wallis
+
+Hipóteses:
+
+$H_0$: Se em todos os níveis CYP2D6 e POR conjunto as médias de Parasitos são iguais;
+
+$H_1$: Se em pelo menos um nível CYP2D6 e POR conjunto as médias de Parasitos é diferente.
+
+
+**5º teste)** Teste de Mann-Whitney
+
+Hipóteses:
+
+$H_0$: A mediana de Gametócitos  é igual em CYP2D6 (Alterada e não alterada);
+
+$H_1$: A mediana de Gametócitos  é diferente em CYP2D6 (Alterada e não alterada). 
+   
+**6º teste)** Teste de Mann-Whitney
+
+Hipóteses:
+
+$H_0$: A mediana de Parasitos  é igual em CYP2D6 (Alterada e não alterada);
+
+$H_1$: A mediana de Parasitos  é diferente em CYP2D6 (Alterada e não alterada). 
+  
+**7º teste)** Teste de Mann-Whitney
+
+Hipóteses:
+
+$H_0$: A mediana de Gametócitos  é igual em POR (Mutada e não mutada);
+
+$H_1$: A mediana de Gametócitos  é diferente em POR (Mutada e não mutada). 
+
+**8º teste)** Teste de Mann-Whitney
+
+Hipóteses:
+
+$H_0$: A mediana de Parasitos  é igual em POR (Mutada e não mutada);
+
+$H_1$: A mediana de Parasitos  é diferente em POR (Mutada e não mutada). 
+  
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+#TESTANDO PRESSUPOSTO DE NORMALIDADE- status de metabolização conjunto
+shapiro.test(bd$PV18SD0NORM[bd$CYP2D6POR == "AM"]) 
+shapiro.test(bd$PV18SD0NORM[bd$CYP2D6POR == "AN"]) 
+shapiro.test(bd$PV18SD0NORM[bd$CYP2D6POR == "NM"]) 
+shapiro.test(bd$PV18SD0NORM[bd$CYP2D6POR == "NN"])
+
+##############################
+#cyp
+shapiro.test(bd$`QPVS25D72/D0`[bd$CYP2D6POR == "AM"]) 
+shapiro.test(bd$`QPVS25D72/D0`[bd$CYP2D6POR == "AN"]) 
+shapiro.test(bd$`QPVS25D72/D0`[bd$CYP2D6POR == "NM"]) 
+shapiro.test(bd$`QPVS25D72/D0`[bd$CYP2D6POR == "NN"]) 
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+qui1=chisq.test(tabela)
+cortest <- cor.test(bd$`QPVS25D72/D0`,bd$PV18SD0NORM,method = "spearman")
+
+esttestequi=qui1$statistic
+meth1<- qui1$method
+pvalu1=qui1$p.value
+
+coresttestp<- cortest$p.value
+method2<- cortest$method
+
+#1º teste de kruskal-  analise conjunta
+# Razão pvs25 
+kruskal1_pvsecyppor= kruskal.test(bd$`QPVS25D72/D0` ~ bd$CYP2D6POR, data = bd)
+pvalor_kruskal1= kruskal1_pvsecyppor$p.value
+method_kruskal1= kruskal1_pvsecyppor$method
+# Parasitas
+kruskal_parasita_cyppor= kruskal.test(bd$PVS48D0 ~ bd$CYP2D6POR, data = bd)
+pvalor_kruskal2= kruskal_parasita_cyppor$p.value
+method_kruskal2= kruskal_parasita_cyppor$method
+
+
+#2 teste de kruskal- cyp
+#razao pvs25
+cyp1=wilcox.test(df2$X2~df2$X1) 
+cyp1_pvalor = cyp1$p.value
+##parasita
+cyp2dfs=wilcox.test(df2$X3~df2$X1) 
+cyp2_pvalor = cyp2dfs$p.value
+
+
+# 3 teste de kruskal- por
+#razao pvs25
+por1q=wilcox.test(df3$X2~df3$X1) 
+por1q_pvalor = por1q$p.value
+##parasita
+por2q=wilcox.test(df3$X3~df3$X1) 
+por2q_pvalor = por2q$p.value
+
+mmmethoddd<- c("Teste de independência","Teste de Spearman","Teste de Kruskal-Wallis","Teste de Kruskal-Wallis","Teste de Mann-Whitney","Teste de Mann-Whitney","Teste de Mann-Whitney","Teste de Mann-Whitney")
+variaveisssssssx = c("CYP2D6 e POR", "Gametócitos e Parasitos", "Gametócitos e CYP2D6/POR", "Parasitos e CYP2D6/POR", "Gametócitos e CYP2D6", "Parasitos e CYP2D6", "Gametócitos e POR", "Parasitos e POR")
+PVALOR= c(pvalu1,coresttestp,pvalor_kruskal1,pvalor_kruskal2,cyp1_pvalor,cyp2_pvalor,por1q_pvalor,por2q_pvalor)
+
+foodnotee1= "Gametócitos= Razão de Pvs25"
+foodnote2= "Parasitos= Quantidade de parasitos no momento inicial"
+foodnote33= "CYP2D6/POR= Status de metabolização conjunto de CYP2D6 e POR "
+
+
+table111111 = data.frame(mmmethoddd,variaveisssssssx,PVALOR)
+names(table111111) = c("Métodos","Variáveis","P-Valores")
+table111111 %>% 
+  dplyr::mutate_if(is.numeric, funs(as.character(signif(., 3)))) %>%
+  kbl(caption = "Análise da associação das variáveis principais") %>%
+  kable_classic_2(full_width = F) %>%
+  kable_styling(latex_options = "HOLD_position")%>%
+  footnote(c(foodnotee1,foodnote2,foodnote33))
+
+```
+
+Medidas resumos da quantidade de parasitos no momento inicial com relação ao status de metabolização conjunto (CYP2D6 e Por); status de metabolização CYP2D6; e status de mutação do gene POR.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE,fig.align="center"}
+
+#cyp e por conjunto
+bd_sum3 <- na.omit(new_df2) %>%
+  group_by(CYP2D6POR) %>%
+  summarize(Min= min(PV18SD0NORM,na.rm= T), Max= max(PV18SD0NORM, na.rm= T),Mean = mean(PV18SD0NORM, na.rm = TRUE),Median=median(PV18SD0NORM, na.rm= T),SD = sd(PV18SD0NORM, na.rm = TRUE)) %>%
+  ungroup()
+
+bd_sum3<- as.data.frame(bd_sum3)
+bd_sum3<-plyr::rename(bd_sum3, c("CYP2D6POR"="col"))
+
+#cyp2d6
+bd_sum4<- na.omit(df2) %>%
+  group_by(X1) 
+
+bd_sum4 =bd_sum4  %>% summarize(Min= min(X3,na.rm= T), Max= max(X3, na.rm= T),Mean = mean(X3, na.rm = TRUE),Median=median(X3, na.rm= T),SD = sd(X3, na.rm = TRUE)) %>%
+  ungroup()
+
+
+bd_sum4<- as.data.frame(bd_sum4)
+bd_sum4<-plyr::rename(bd_sum4, c("X1"="col"))
+
+#por
+bd_sum5<-na.omit(df3) %>%
+  group_by(X1)
+
+bd_sum5 =bd_sum5 %>% summarize(Min= min(X3,na.rm= T), Max= max(X3, na.rm= T),Mean = mean(X3, na.rm = TRUE), Median=median(X3, na.rm= T), SD = sd(X3, na.rm = TRUE))%>%
+  ungroup()
+
+bd_sum5<- as.data.frame(bd_sum5)
+bd_sum5<-plyr::rename(bd_sum5, c("X1"="col"))
+
+
+z <- quickmerge(bd_sum3, bd_sum4)
+
+z1 <- quickmerge(z, bd_sum5)
+
+z1[,-1]<- (round(z1[,-1],4)) #ARREDONDADO PARA 2 CASAS DECIMAIS
+
+varios_bd<-z1
+
+attach(varios_bd)
+colnames(varios_bd)<-c("Status","Mínimo", "Máximo","Média","Mediana","Desvio Padrão")
+
+varios_bd %>%
+  kbl(caption="Análise descritiva da variável Quantidade de parasitos (momento incial)") %>%
+  add_header_above(c(" " = 1, "Quantidade de parasitos" = 5),bold = TRUE) %>%
+  pack_rows(index = c("Metabolização CYP2D6 e POR" = 4, "Metabolização CYP2D6 " = 2, "Mutação do gene POR" = 2)) %>%
+  kable_classic(full_width = F,font_size = 10) %>%
+  kable_styling(latex_options = "HOLD_position") %>%
+  row_spec(0, bold = TRUE, italic = TRUE, hline_after = TRUE, font_size = 10, align = "c")
+
+```
+
+### Regressão múltipla
+
+A ideia dos modelos de regressão construidos é averiguar a contribuição da adição da variável "Quantidade de parasitos (momento inicial)" nos modelos, antes explicados apenas pelas variáveis status de metabolização/mutação CYP2D6 e POR.
+
+Nesse sentido, foram sintetizados seis modelos de Regressão linear múltipla. Em dois desses modelos não foi obtido nenhuma variável explicativa significativa no modelo. Vale salientar que os dois modelos, construídos sem nenhuma variável explicativa significativa, eram explicados apenas pelas variáveis explicativas: Status de Metabolização CYP2D6;e Status de Mutação do gene POR.
+
+A seguir segue os quatro modelos que possuem pelo menos uma variável explicativa significativa para explicar a média da Eliminação de gametócitos:
+
+**Modelo 1: Status de metabolização conjunto **
+
+Modelo de referência : $Y_i= \beta_0 + \beta_1x_{1i} + \beta_2x_{2i} + \beta_3x_{3i}+ \epsilon_i$
+
+Modelo ajustado: $Y_i= -3,1846 + 0,7875x_{1i} + 1,0909x_{2i} +1,0503x_{3i} + e_i$
+
+Legenda:   
+
+$\beta_0:$ Intercepto; *significativa*
+
+$\beta_1x_{1i}:$ CYP2D6PORAlterada/Não-mutada;
+
+$\beta_2x_{2i}:$ CYP2D6PORNormal/Mutada; *significativa*
+
+$\beta_3x_{3i}:$ CYP2D6PORAlterada/Mutada; 
+
+$\epsilon_i:$ Erro aleatório.                
+
+**Modelo 2: Status de Metabolização conjunto + parasitos**
+
+Modelo de referência : $Y_i= \beta_0 + \beta_1x_{1i} + \beta_2x_{2i} + \beta_3x_{3i} + \beta_4x_{4i}+ \epsilon_i$
+
+Modelo ajustado: $Y_i= -1,5040 + 0,6118x_{1i} + 0,9787x_{2i} + 0,8877x_{3i} -0,3105x_{4i} + e_i$
+
+
+Legenda:   
+
+$\beta_0:$ Intercepto; *significativa*
+
+$\beta_1:$ CYP2D6PORAlterada/Não-mutada;
+
+$\beta_2:$ CYP2D6PORNormal/Mutada; *significativa*
+
+$\beta_3:$ CYP2D6PORAlterada/Mutada;
+
+$\beta_4:$ PV18SD0NORM;*significativa* 
+
+$\epsilon_i:$ Erro aleatório.
+
+**Modelo 3: Status de Metabolização CYP + parasitos**
+
+Modelo de referência : $Y_i= \beta_0 + \beta_1x_{1i} + \beta_2x_{2i} + \epsilon_i$
+Modelo ajustado: $Y_i= -0,7459 -0,3400x_{1i} -0,3223x_{2i} + e_i$
+
+Legenda:   
+
+$\beta_0:$ Intercepto; 
+
+$\beta_1:$ Atividade CYP normal;
+
+$\beta_2:$ PV18SD0NORM;*significativa* 
+
+$\epsilon_i:$ Erro aleatório.
+
+
+**Modelo 4: Status de Mutação POR + parasitas**
+
+Modelo de referência : $Y_i= \beta_0 + \beta_1x_{1i} + \beta_2x_{2i} + \epsilon_i$
+
+Modelo ajustado: $Y_i= -0,3011   -0,7627x_{1i} -0,3575x_{2i} + e_i$
+
+Legenda:   
+
+$\beta_0:$ Intercepto; 
+
+$\beta_1:$ Ausência de mutação POR;*significativa* 
+
+$\beta_2:$ PV18SD0NORM;*significativa* 
+
+$\epsilon_i:$ Erro aleatório.
+
+```{r fig.align="center", message=FALSE, warning=FALSE, include=FALSE}
+
+#### Análise de resíduos:
+
+#- Status de metabolização conjunto + Parasita;
+#- Status de metabolização CYP2D6 + Parasita;
+#- Status de mutação POR + Parasita.
+
+############ MODELOS APENAS COM STATUS########################
+##Modelo 1- status de metabolização conjunto
+modelo= lm(data= new_df2,`QPVS25D72/D0`~ CYP2D6POR)# significante
+norm1=shapiro.test(residuals(modelo))
+pvalornorm1= norm1$p.value #Valor P do teste é pequeno, rejeita-se a hipótese de normalidade dos resíduos e, por consequência, conclui-se que os erros não são normalmente distribuídos.
+
+#modelo 2- status de metabolização cyp
+modelo2= lm(data= df2,X2~ X1) # nada significativo
+norm2=shapiro.test(residuals(modelo2))
+pvalornorm2= norm2$p.value
+
+#modelo 3- status de metabolização por
+modelo3= lm(data= df3, X2~X1) # nada significativo
+norm3=shapiro.test(residuals(modelo3))
+pvalornorm3= norm3$p.value
+
+
+
+############ MODELOS COM STATUS + QUANTIDADE INICIAL DE PARASITAS ########################
+##Modelo 1- status de metabolização conjunto + parasitas
+modelo_PARASITA1 =lm(data= new_df2,`QPVS25D72/D0`~ CYP2D6POR + PV18SD0NORM)# significativo
+norm_PARASITA1=shapiro.test(residuals(modelo_PARASITA1))
+pvalor_PARASITA1= norm_PARASITA1$p.value
+
+##Modelo 2- status de metabolização CYP + parasitas
+modelo_PARASITA2 =lm(data= df2, X2 ~ X1 + X3)# significativo
+norm_PARASITA2=shapiro.test(residuals(modelo_PARASITA2))
+pvalor_PARASITA2= norm_PARASITA2$p.value
+
+##Modelo 3- status de MUTAÇAO POR + parasitas
+modelo_PARASITA3 =lm(data= df3, X2 ~ X1 + X3)# significativo
+norm_PARASITA3=shapiro.test(residuals(modelo_PARASITA3))
+pvalor_PARASITA3= norm_PARASITA3$p.value
+
+
+
+```
+
+Visando analisar se a variável quantificação de parasitas no momento inicial (0 horas) é fator de confusão para as análises os modelos de regressão construídos, analisou-se os valores dos coeficientes de determinação ajustados:
+
+```{r echo=FALSE, message=FALSE, warning=FALSE,fig.align="center"}
+#status conjunto
+testereg=summary(modelo) 
+radj=testereg$adj.r.squared 
+
+#status conjunto + parasitas
+testereg2=summary(modelo_PARASITA1) 
+radj2=testereg2$adj.r.squared 
+
+#cyp + parasita
+testeregcyp2=summary(modelo_PARASITA2) 
+radjcyp2=testeregcyp2$adj.r.squared 
+
+#por + parasita
+testeregpor2=summary(modelo_PARASITA3) 
+radjpor2=testeregpor2$adj.r.squared 
+
+
+###############Fator de confusão- Analise R ajustado#######################
+
+
+
+var_tab2 = c("Status de metabolização conjunto", "Status de metabolização conjunto + Parasita","Status de metabolização CYP2D6 + Parasita", "Status de mutação POR + Parasita")
+r_ajustados = c(radj,radj2,radjcyp2,radjpor2)
+
+
+
+fooodnote2= "Parasitas= Quantidade de parasitas no momento inicial"
+
+tab_adj = data.frame(var_tab2,r_ajustados)
+names(tab_adj) = c("Variáveis explicativas", "Coeficiente de determinação ajustado")
+tab_adj %>% 
+  dplyr::mutate_if(is.numeric, funs(as.character(signif(., 3)))) %>%
+  kbl(caption = "Análise da contribuição da variável 'Parasitas' para os modelos de regressão") %>%
+  pack_rows(index = c("Modelo 1" = 1, "Modelo 2" = 1, "Modelo 3" = 1, "Modelo 4")) %>%
+  kable_classic_2(full_width = F,font_size = 10) %>%
+  kable_styling(latex_options = "HOLD_position") %>%  
+  row_spec(0, bold = TRUE, italic = TRUE, hline_after = TRUE, font_size = 10, align = 'c') %>%
+  footnote(c(fooodnote2))
+
+```
+
+
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+
+#TABELA COM OS RESULTADOS DOS TESTES DE NOMALIDADE DOS MODELOS
+
+var_tab = c("Status de metabolização conjunto", "Status de metabolização conjunto + Parasita","Status de metabolização CYP2D6 + Parasita", "Status de mutação POR + Parasita")
+pvalores_tab = c(pvalornorm1,pvalor_PARASITA1,pvalor_PARASITA2,pvalor_PARASITA3)
+
+
+
+fooodnote= "Parasitas= Quantidade de parasitas no momento inicial"
+
+tab_norm_residuos = data.frame(var_tab,pvalores_tab)
+names(tab_norm_residuos) = c("Variáveis explicativas", "P-valores")
+tab_norm_residuos %>% 
+  dplyr::mutate_if(is.numeric, funs(as.character(signif(., 3)))) %>%
+  kbl(caption = "Teste de normalidade (shapiro Wilk) dos resíduos") %>%
+  pack_rows(index = c("Modelo 1" = 1, "Modelo 2" = 1, "Modelo 3" = 1, "Modelo 4")) %>%
+  kable_classic_2(full_width = F,font_size = 10) %>%
+  kable_styling(latex_options = "HOLD_position") %>%  
+  row_spec(0, bold = TRUE, italic = TRUE, hline_after = TRUE, font_size = 10, align = 'c') %>%
+  footnote(c(fooodnote))
+```
+
+## Pergunta 3
+
+"Avaliar se sexo e idade dos pacientes são fatores de confusão nas análises de associação entre status CYP/POR e eliminação de gametócitos realizadas no item 1." - Texto elaborado pelas pesquisadoras.
+
+Com o propósito de visualizar se as variáveis Sexo e Idade são fatores de confusão nos resultados obtidos no item 1:
+
+```{r echo=FALSE, message=FALSE, warning=FALSE,fig.height=3.5, fig.width=5,fig.align="center"}
+
+# graficos
+## Genero X cyp/por
+sex_gametocitos= ggplot(na.omit(new_df2),aes(x = SEXO, y = `QPVS25D72/D0`, fill= SEXO)) +
+  geom_boxplot(alpha = 0.7)+ labs(y = "Razão de Pvs25", x = "Sexo", fill= "Sexo", title = "Figura 14 - Gráfico de boxplot da Razão de Pvs25 em relação\nao Sexo",size=10)+  scale_fill_brewer(palette="BuPu")
+
+
+sex_gametocitos+theme(plot.title = element_text(size=10))+ theme(axis.text.x = element_blank(),
+        axis.ticks.x = element_blank())
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE,fig.height=3.5, fig.width=5,fig.align="center"}
+## idadeXcyp/por
+id_cyp_por= ggplot(na.omit(new_df2),aes(x = SEXO, y = IDADE, fill= CYP2D6POR)) +
+    geom_boxplot(alpha = 0.7) + labs(y = "Idade",
+       x = "CYP/POR", fill="CYP/POR", title = "Figura 15 - Gráfico de boxplot Idade por CYP/POR conjunto",size=10) +  scale_fill_brewer(palette="BuPu")
+
+id_cyp_por+theme(plot.title = element_text(size=10))
+
+
+```
+
+Visando testar estatisticamente se exite uma associação entre as variáveis, postulou-se testes estatísticos, cujos resultados foram apresentados na Tabela 8. As hipóteses de interesse dos testes realizados foram:
+
+**1º teste)** Teste qui-quadrado de independência:
+
+Esse teste é utilizado para verificar se existe associação entre as duas variáveis qualitativas:
+
+Hipóteses:
+
+$H_0$: As variáveis sexo e  status de metabolização conjunto são independentes;
+
+$H_1$: As variáveis sexo e  status de metabolização conjunto são dependentes.
+
+**2º teste)** Teste de Correlação de Spearman 
+
+Hipóteses:
+
+$H_0$: A correlação entre as variáveis Idade e  Razão de Pvs25 é nula;
+
+$H_1$: A correlação entre as variáveis idade e  razão de Pvs25 não é nula.
+  
+**3º teste)** Teste de Mann-Whitney
+
+Hipóteses:
+
+$H_0$: A mediana da Idade masculina é igual à mediana da Idade feminina;
+
+$H_1$: A mediana da Idade masculina é diferente à mediana da Idade feminina.
+
+**4º teste)** Teste de Mann-Whitney
+
+Hipóteses:
+
+$H_0$: A mediana da Razão de Pvs25 do grupo masculina é igual à mediana da Razão de Pvs25 no grupo feminino;
+
+$H_1$: A mediana da Razão de Pvs25 do grupo masculina é diferente à mediana da Razão de Pvs25 no grupo feminino
+
+**5º teste)** Teste de Kruskall-Wallis:
+
+$H_0$: As Idades médias para cada categória dos Status de metabolização conjunto são iguais;
+
+$H_1$: As Idades médias, para pelo menos um dos Status de metabolização conjunto, é diferente;
+
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+##sexo e idade
+shapiro.test(new_df2$IDADE[new_df2$SEXO == "Masculino"]) #0.0008889- rejeito a hipotese de normalidade, desse modo utilizaremos metodos não paramétricos
+shapiro.test(new_df2$IDADE[new_df2$SEXO == "Feminino"]) # 0.1663
+
+##Sexo e razão de gametocitos
+shapiro.test(new_df2$`QPVS25D72/D0`[new_df2$SEXO == "Masculino"]) #0.0005716
+shapiro.test(new_df2$`QPVS25D72/D0`[new_df2$SEXO == "Feminino"]) # 0.2174
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE,fig.align="center"}
+
+# testes estatísticos
+
+## teste de independencia 
+ttabelasc1= table(bd$SEXO,bd$CYP2D6POR)
+ttestef1 = chisq.test(ttabelasc1)
+ppvalorf1 = ttestef1$p.value
+
+
+## teste correlação de spearman: IDADE E RAZÃO DE GAMETÓCITOS
+cortest22 <- cor.test(new_df2$`QPVS25D72/D0`,new_df2$IDADE,method = "spearman")
+coresttestpp<- cortest22$p.value
+method22<- cortest22$method
+
+#TESTE DE MEDIAS
+##IDADE SEXO
+testesexoidade =wilcox.test(IDADE~SEXO, data = bd)
+pppvaluIDADESEXO = testesexoidade$p.value 
+
+
+
+## SEXO E RAZÃO DE GAMETOCITOS
+TESTESEXOGAME=wilcox.test(`QPVS25D72/D0` ~ SEXO, data =na.omit (new_df2))
+TESTESEXOGAMEPPVALUE=TESTESEXOGAME$p.value
+
+
+##idade e cyp\por
+KRUSKALQUEST3=kruskal.test(IDADE ~ CYP2D6POR, data =na.omit (new_df2))
+KRUSKALQUEST3_P_V= KRUSKALQUEST3$p.value
+
+##########################
+
+
+metodos<- c("Teste de independência","Teste de Spearman","Teste de Mann-Whitney","Teste de Mann-Whitney", "Teste de Kruskal-Wallis") 
+variaveisssutilizadas = c("Sexo e CYP2D6/POR conjunto", "Idade e Razão de Pvs25", "Idade e sexo", "Sexo e Razão de Pvs25", "Idade e CYP2D6/POR conjunto")
+PVALOR222= c(ppvalorf1,coresttestpp,pppvaluIDADESEXO,TESTESEXOGAMEPPVALUE,KRUSKALQUEST3_P_V)
+
+tabelaquesta3 = data.frame(metodos,variaveisssutilizadas,PVALOR222)
+names(tabelaquesta3) = c("Métodos","Variáveis","P-Valores")
+tabelaquesta3 %>% 
+  dplyr::mutate_if(is.numeric, funs(as.character(signif(., 3)))) %>%
+  kbl(caption = "Análise da associação das variáveis principais") %>%
+  kable_classic_2(full_width = F) %>%
+  kable_styling(latex_options = "HOLD_position")
+
+```
+
+
+### Regressão múltipla
+
+A pergunta 1 foi desenvolvida tendo como base a análise da relação entre as variáveis: Razão de Pvs 25 e Status de metabolização conjunto CYP2D6/POR. Como exposto o modelo de regressão multipla que rege a relação dessas variáveis é:
+
+
+**Modelo item 1**
+
+Modelo de referência : $Y_i= \beta_0 + \beta_1x_{1i} + \beta_2x_{2i} + \beta_3x_{3i} + \epsilon_i$
+
+Modelo ajustado:
+
+$Y_i= -3,1846 + 0,7875x_{1i} + 1,0909x_{2i} +1,0503x_{3i} + e_i$
+
+Legenda:   
+
+$Y_i:$ Razão de Pvs25
+
+$\beta_0:$ Intercepto; *significativa*
+
+$\beta_1:$ CYP2D6PORAlterada/Não-mutada;
+
+$\beta_2:$ CYP2D6PORNormal/Mutada; *significativa*
+
+$\beta_3:$ CYP2D6PORAlterada/Mutada; 
+
+$\epsilon_i:$ Erro aleatório.       
+
+Visando averiguar se as variáveis Idade e Sexo contribuem para o modelo, foi sintetizado outro modelo de regressão múltipla, o qual pode ser representado pela equação:
+
+
+**Modelo com adição das variáveis explicativas: Idade e Sexo**
+
+Modelo de referência : $Y_i= \beta_0 + \beta_1x_{1i} + \beta_2x_{2i} + \beta_3x_{3i}+ \beta_4x_{4i} + \beta_5x_{5i}+ \epsilon_i$
+
+Modelo ajustado: 
+
+$Y_i= -3,228471 + 0,728832x_{1i} + 1,205164x_{2i} + 1,022845x_{3i} + 0,001203x_{4i} + 0,099869x_{5i} + e_i$
+
+Legenda:   
+
+$Y_i:$ Razão de Pvs25
+
+$\beta_0:$ Intercepto; *significativa*
+
+$\beta_1:$ CYP2D6PORAlterada/Não-mutada;
+
+$\beta_2:$ CYP2D6PORNormal/Mutada; *significativa*
+
+$\beta_3:$ CYP2D6PORAlterada/Mutada;
+
+$\beta_4:$ IDADE 
+
+$\beta_5:$ SEXOFeminino
+
+$\epsilon_i:$ Erro aleatório.    
+
+Ressalta-se que a normalidade dos resíduos, desse modelo de regressão múltipla, foi testada. E obteu-se um p-valor pequeno (0,0185), o que indica que o modelo construído não está bem ajustado.
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+modelo4= lm(data= new_df2,`QPVS25D72/D0`~ CYP2D6POR +IDADE+SEXO)
+
+#teste normalidade dos residuos
+norm44=shapiro.test(residuals(modelo4))
+pvalornorm444= norm44$p.value 
+```
+
+Além disso, com o propósito de avaliar a contribuição das variáveis Sexo e Idade para o modelo de regressão múltipla do item 1:
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+#modelo de regressão
+norm4=shapiro.test(residuals(modelo4))
+
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE,fig.align="center"}
+testereg4=summary(modelo4)
+radj4=testereg4$adj.r.squared
+
+r_ajustados2 = c(radj,radj4)
+
+tab_adj2 = data.frame(r_ajustados2)
+names(tab_adj2) = c("Coeficiente de determinação ajustado")
+tab_adj2 %>% 
+  dplyr::mutate_if(is.numeric, funs(as.character(signif(., 3)))) %>%
+  kbl(caption = "Análise da contribuição das variáveis Idade e Sexo para o modelo de regressão") %>%
+  kable_classic_2(full_width = F,font_size = 10) %>%
+  pack_rows(index = c("Modelo item 1" = 1, "Modelo com adição de Idade e Sexo" = 1)) %>%
+  kable_styling(latex_options = "HOLD_position") %>%  
+  row_spec(0, bold = TRUE, italic = TRUE, hline_after = TRUE, font_size = 10, align = 'c') 
+```
+P
+## Pergunta 4
+
+"Identificar se a concentração de primaquina em 72 horas (PQCONC ou PQCONCLOG) é influenciada pelo fenótipo de CYP2D6 (CYP2D6FENOTIPO), POR (PORMUT) e o status conjunto CYP2D6/POR (CYP2D6POR). Exemplo: Indivíduos com fenótipo gPM possuem maior concentração de primaquina do que indivíduos gNM-F?" - Texto elaborado pelas pesquisadoras.
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE,fig.height=3.2, fig.width=4.8,fig.align="center"}
+# Graficos
+
+## concentração de primaquilax fenotipo(categorico)
+
+bd$CYP2D6FENOTIPO<-as.factor(bd$CYP2D6FENOTIPO)
+new_df6 <- subset(bd, CYP2D6FENOTIPO!= "ND")
+new_df6$CYP2D6FENOTIPO<-factor(new_df6$CYP2D6FENOTIPO, levels=c("gIM","gNM-F","gNM-S","gPM","gUM"),labels=c("Intermediária","Normal","Reduzida","Nula","Ultrarrápida"))
+
+
+prima_fenotipo= ggplot(na.omit(new_df6),aes(x = CYP2D6FENOTIPO, y = PQCONC, fill= CYP2D6FENOTIPO)) +
+    geom_boxplot(alpha = 0.7) + labs(y = "Concentração de primaquina (ng/mL)",
+       x = "CYP2D6FENOTIPO", fill="Metabolização",title = "Figura 16 - Gráfico de boxplot Concentração de primaquina\napós 72 horas, em relação ao Fenótipo CYP2D6",size=10)+  scale_fill_brewer(palette="BuPu")
+
+
+prima_fenotipo=prima_fenotipo+theme(plot.title = element_text(size=10))+ theme(axis.text.x = element_blank(),
+        axis.ticks.x = element_blank())
+prima_fenotipo
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE,fig.height=3.2, fig.width=4.8,fig.align="center"}
+## concentração de primaquilax pormut(categorico)
+
+bd$PORMUT<-as.factor(bd$PORMUT)
+bd$PORMUT<-factor(bd$PORMUT, levels=c("MUTADA","NAOMUT"),labels=c("Mutada","Não mutada"))
+
+
+prima_pormut= ggplot(na.omit(bd),aes(x = PORMUT, y = PQCONC, fill= PORMUT)) +
+    geom_boxplot(alpha = 0.7) + labs(y = "Concentração de primaquina",
+       x = "POR", fill="POR",title = "Figura 17 - Gráfico de boxplot Concentração de primaquina\napós 72 horas, em relação ao gene POR",size=10)+  scale_fill_brewer(palette="BuPu") 
+
+prima_pormut=prima_pormut+theme(plot.title = element_text(size=10))+ theme(axis.text.x = element_blank(),
+        axis.ticks.x = element_blank())
+prima_pormut
+
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE,fig.height=3.2, fig.width= 4.8,fig.align="center"}
+## concentração de primaquilax status conjunto cyo2d6/por(catgoricos)
+
+prima_estato= ggplot(na.omit(new_df2),aes(x = CYP2D6POR, y = PQCONC, fill= CYP2D6POR)) +
+    geom_boxplot(alpha = 0.7) + labs(y = "Concentração de primaquina",
+       x = "CYP2D6POR", fill="CYP2D6POR",title = "Figura 18 - Gráfico de boxplot Concentração de primaquina\napós 72 horas, em relação à CYP2D6",size=10)+  scale_fill_brewer(palette="BuPu")
+
+prima_estato=prima_estato+theme(plot.title = element_text(size=10))+ theme(axis.text.x = element_blank(),
+        axis.ticks.x = element_blank())
+prima_estato
+
+
+```
+
+Assumimos como hipóteses de interesse:
+
+**1º teste)** Teste de Kruskall-Wallis:
+
+$H_0$: A Concentração média de primaquina, após 72 horas, para cada categória dos Status de metabolização conjunto são iguais;
+
+$H_1$: A Concentração média de primaquina, após 72 horas, para pelo menos uma das categórias dos Status de metabolização conjunto, é diferente;
+
+**2º teste)** Teste de Kruskall-Wallis:
+
+$H_0$: A Concentração média de primaquina, após 72 horas, para cada categória do fenótipo CYP2D6 são iguais;
+
+$H_1$:  A Concentração média de primaquina, após 72 horas, para pelo menos uma das categória do fenótipo CYP2D6, é diferente;
+
+**3º teste)** Teste de Mann-Whitney:
+
+$H_0$: A Concentração mediana de primaquina, após 72 horas, para cada categória dos Status de mutação Status de mutação do gene POR são iguais;
+
+$H_1$: A Concentração mediana de primaquina, após 72 horas, para cada categória dos Status de mutação do gene POR são diferentes;
+
+```{r echo=FALSE, fig.align="center", message=FALSE, warning=FALSE}
+
+
+###conjunta
+kruskal.test71_2=kruskal.test(PQCONC ~ CYP2D6POR, data =na.omit (new_df2))
+kruskal.test71_2_PVALOR= kruskal.test71_2$p.value
+
+#CYP2D6FENOTIPO
+kruskal.test71=kruskal.test(PQCONC~CYP2D6FENOTIPO, data = new_df6) 
+kruskal.test71PVALOR = kruskal.test71$p.value
+
+#por
+PORMUTQUEST4=wilcox.test(PQCONC ~ PORMUT, data = bd)
+PORMUTQUEST4_PVALOR = PORMUTQUEST4$p.value
+
+
+######################
+
+methodos_kruskal_man_quest7<- c("Teste de Kruskal-Wallis","Teste de Kruskal-Wallis","Teste de Mann-Whitney")
+variaveis_quest7 = c("CYP2D6/POR conjunto","Fenótipo CYP2D6", "Metabolização POR")
+PVALOR_quest7= c(kruskal.test71_2_PVALOR,kruskal.test71PVALOR,PORMUTQUEST4_PVALOR)
+
+TESTESQUEST77 = data.frame(methodos_kruskal_man_quest7,variaveis_quest7,PVALOR_quest7)
+names(TESTESQUEST77) = c("Métodos","Variáveis","P-Valores")
+TESTESQUEST77 %>% 
+  dplyr::mutate_if(is.numeric, funs(as.character(signif(., 3)))) %>%
+  kbl(caption = "Teste de médias e medianas para Concentração de Primaquina após 72 horas") %>%
+  kable_classic_2(full_width = F) %>%
+  kable_styling(latex_options = "HOLD_position")
+```
+
+Os p-valores apresentados na Tabela 10, revelam que em nenhum dos casos houve rejeição da hipótese nula de igualdade das médias ou medianas de Concentração de primaquina 72 horas. Essa análise é um indício de que talvez as variáveis analisadas (Status de metabolização conjunto CYP2D6/POR, Fenótipo CYP2D6,Status de mutação do ge POR) não exercem influência sobre a variável PQCONC. Entretanto, para uma análise mais precisa, foi postulado modelos de regressão multipla com o propósito de verificar a contribuição de cada variável na explicação de um modelo cuja variável resposta é Concentração de primaquina após 72 horas.
+
+### Regressão Múltipla
+
+Sobre demanda das pesquisadoras, modelos para explicação da concentração de primaquina em 72 horas (PQCONC) foram desenvolvidos. Nesse sentido, foram sintetizados seis modelos de Regressão linear múltipla. Em três desses modelos não
+foi obtido nenhuma variável explicativa significativa no modelo. Vale salientar que os três modelos, construídos sem nenhuma variável explicativa significativa, eram explicados pelas variáveis explicativas: CYP2D6FENOTIPO; CYP2D6FENOTIPO + idade + sexo; PORMUT. Além disto, é importante resaltar que rejeita-se a normalidade dos erros em todos  os modelos de regressão, logo esses modelos não estão bem ajustados.
+
+
+**Modelo 1: CYP2D6FENOTIPO + Idade + Sexo**
+
+Modelo de referência : $Y_i= \beta_0 + \beta_1x_{1i} + \beta_2x_{2i} + \beta_3x_{3i}+ \beta_4x_{4i} + \beta_5x_{5i}+ \beta_6x_{6i}+ \epsilon_i$
+
+Modelo ajustado: 
+
+$Y_i= 2,100350 -0,058641x_{1i} -0,022574x_{2i} +0,316897x_{3i} -0,118646x_{4i} +  0,005663x_{5i} -0,105175x_{6i} +\epsilon_i$
+
+Legenda:   
+
+$Y_i:$ concentração de primaquina em 72 horas (PQCONC);
+
+$\beta_0:$ Intercepto; *significativa*
+
+$\beta_1:$ CYP2D6FENOTIPONormal;
+
+$\beta_2:$ CYP2D6FENOTIPOReduzida; 
+
+$\beta_3:$ CYP2D6FENOTIPONula;
+
+$\beta_4:$ CYP2D6FENOTIPOUltrarrápida; 
+
+$\beta_5:$ IDADE;*significativa* 
+
+$\beta_6:$ SEXOFeminino.
+
+$\epsilon_i:$ Erro aleatório.    
+
+
+**Modelo 2: Status de metabolização conjunto CYP/POR**
+
+Modelo de referência : $Y_i= \beta_0 + \beta_1x_{1i} + \beta_2x_{2i} + \beta_3x_{3i}+ \beta_4x_{4i} +\epsilon_i$
+
+Modelo ajustado: 
+
+$Y_i= 2,31564 -0,08454x_{1i} -0,09679x_{2i} -0,20614x_{3i} -0,118646x_{4i} + \epsilon_i$
+
+Legenda:   
+
+$Y_i:$ concentração de primaquina em 72 horas (PQCONC);
+
+$\beta_0:$ Intercepto; *significativa*
+
+$\beta_1:$ CYP2D6PORAN;
+
+$\beta_2:$ CYP2D6PORND; 
+
+$\beta_3:$ CYP2D6PORNM;*significativa*
+
+$\beta_4:$ CYP2D6PORNN; 
+
+$\epsilon_i:$ Erro aleatório. 
+
+
+**Modelo 3: Status de metabolização CYP/POR + Idade + Sexo**
+
+Modelo de referência : 
+
+$Y_i= \beta_0 + \beta_1x_{1i} + \beta_2x_{2i} + \beta_3x_{3i}+ \beta_4x_{4i}  + \beta_5x_{5i}+ \beta_6x_{6i} +\epsilon_i$
+
+Modelo ajustado: 
+
+$Y_i= 2,193303 -0,082986x_{1i} -0,109217x_{2i} -0,226303x_{3i} -0,073692x_{4i}  +0,004362x_{5i} -0,062416x_{6i} + \epsilon_i$
+
+Legenda:   
+
+$Y_i:$ concentração de primaquina em 72 horas (PQCONC);
+
+$\beta_0:$ Intercepto; *significativa*
+
+$\beta_1:$ CYP2D6PORAN;
+
+$\beta_2:$ CYP2D6PORND; 
+
+$\beta_3:$ CYP2D6PORNM;*significativa*
+
+$\beta_4:$ CYP2D6PORNN; 
+
+$\beta_5:$ IDADE;*significativa* 
+
+$\beta_6:$ SEXOFeminino.
+
+$\epsilon_i:$ Erro aleatório.    
+
+ 
+
+
+```{r fig.align="center", message=FALSE, warning=FALSE, include=FALSE}
+
+#######considerando idade + sexo
+IDADESEXO1= lm(data= new_df6,PQCONC~CYP2D6FENOTIPO+ IDADE +SEXO)# significativo
+IDADESEXO1111=shapiro.test(residuals(IDADESEXO1))
+IDADESEXO1PVALOR= IDADESEXO1111$p.value 
+
+##Modelo 2- CYP2D6POR
+modeloo2= lm(data= bd,PQCONC~CYP2D6POR)# significativo
+norm222=shapiro.test(residuals(modeloo2))
+pvalornormm2= norm222$p.value 
+#######considerando idade + sexo
+IDADESEXO2= lm(data= bd,PQCONC~CYP2D6POR+ IDADE +SEXO) # significativo
+IDADESEXO2222=shapiro.test(residuals(IDADESEXO2))
+IDADESEXO2222PVALOR= IDADESEXO2222$p.value 
+
+```
+
+Visando analisar a capacidade explicativa de cada modelo, calculou-se os respectivos coeficientes de dereminação ajustados:
+
+```{r echo=FALSE, message=FALSE, warning=FALSE,fig.align="center"}
+####Modelo1##############
+
+# +idade +sexo
+testeregg2=summary(IDADESEXO1) 
+radjj2=testeregg2$adj.r.squared 
+
+#######Modelo2#####################
+testeregg3=summary(modeloo2) 
+radjj3=testeregg3$adj.r.squared 
+
+# +idade +sexo
+testeregg4=summary(IDADESEXO2) 
+radjj4=testeregg4$adj.r.squared 
+
+
+###############Fator de confusão- Analise R ajustado#######################
+
+var_tabbquestao4 = c("CYP2D6FENOTIPO + Idade + Sexo","Status conjunto CYP/POR","CYP/POR + Idade + Sexo ")
+r_ajustadossss2 = c(radjj2,radjj3,radjj4)
+
+fffnote222 = "Variável resposta= Concentração de primaquina em 72 horas"
+fffdnote="CYP2D6FENOTIPO = Mebolização do gene CYP2D6"
+FFFDNOTEE="Status de metabolização conjunto"
+ffdd= "Status de mutação do gene POR"
+
+tab_adjjj2 = data.frame(var_tabbquestao4,r_ajustadossss2)
+names(tab_adjjj2) = c("Variáveis explicativas", "Coeficiente de determinação ajustado")
+tab_adjjj2 %>% 
+  dplyr::mutate_if(is.numeric, funs(as.character(signif(., 3)))) %>%
+  kbl(caption = "Análise da contribuição das variáveis 'Idade e Sexo' para os modelos de regressão") %>% 
+  pack_rows(index = c("Modelo 1" = 1, "Modelo 2" = 1, "Modelo 3" = 1)) %>%
+  kable_classic_2(full_width = F,font_size = 10) %>%
+  kable_styling(latex_options = "HOLD_position") %>%  
+  row_spec(0, bold = TRUE, italic = TRUE, hline_after = TRUE, font_size = 10, align = 'c') %>%
+  footnote(c(fffnote222,fffdnote,FFFDNOTEE,ffdd))
+
+```
+
+
+## Pergunta 5
+
+*"Correlacionar a concentração de primaquina (PQCONC ou PQCONCLOG) com a redução de Pvs25 (QPVS25D72/D0 ou QPVS25LOGD72/D0; alternativamente pode-se utilizar as variáveis medidas em cada tempo: QPVS25D0LOG e QPVS25D72LOG). Exemplo: Aqueles indivíduos que possuem maior concentração de primaquina tiveram maior redução de Pvs25? Essas análises também podem ser realizadas considerando apenas presença/ausência de gametócitos em D0 e D72 (PVS25D0 e PVS25D72)"- Texto elaborado pelas pesquisadoras.*
+
+Primeiramente foi verificado, através de um diagrama de dispersão, se as variáveis Concentração de primaquina (ng/mL; fármaco estudado) em 72 horas e Razão de Pvs 25  apresentam algum padrão de linearidade, pois caso se confirme pode-se utilizar o ceficiente de correlação linear de Pearson para mensurar tal correlação. 
+
+```{r echo=FALSE, message=FALSE, warning=FALSE,fig.height=3.5, fig.width= 5}
+
+grafdisp5<-ggplot(bd, aes(x = PQCONC, y = `QPVS25D72/D0`, na.rm=T)) +
+  geom_point() + labs(title = "Figura 19 - Gráfico de dispersão Concentração de primaquina\napós 72 horas, em relação à Razão de Pvs25",size=10, y = "Razão de Pvs25",
+       x = "Primaquina")+  scale_fill_brewer(palette="BuPu")+ geom_smooth(method = "lm")
+
+
+grafdisp5=grafdisp5+theme(plot.title = element_text(size=10))
+    
+grafdisp5  
+    
+spearman=cor.test(bd$PQCONC,bd$`QPVS25D72/D0`,method = "spearman",exact=FALSE)
+pvalorspearman= spearman$p.value
+
+```
+À vista disso, prosseguimos a análise da relação das variáveis, utilizando o método de correlação de Spearman, o qual assume como hipóteses de interesse:
+
+$H_0$: A correlação entre as variáveis, Concentração de primaquina (ng/mL; fármaco estudado) em 72 horas e Razão de Pvs 25 (72 horas - 0 horas),  é zero/nula;
+
+$H_1$: A correlação entre as variáveis, Concentração de primaquina (ng/mL; fármaco estudado) em 72 horas e Razão de Pvs 25 (72 horas - 0 horas), não é nula.
+
+Foi orientado também conduzir a análise tendo em vista a relação das variáveis: Concentração de primaquina (ng/mL; fármaco estudado) em 72 horas e Presença/ausência de gametócitos nos momentos 0 horas e 72 horas. Nesse sentido, a Tabela 12 foi construída visando obter uma descrição de como a variável Concentração de primaquina- 72 horas se distribui, tendo em vista os níveis das vaiáveis: Status de Pvs 25 no momento inicial e Status de Pvs 25 após 72 horas. 
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE,fig.align="center"}
+bd$PVS25D72<- as.factor(bd$PVS25D72)
+bd$PVS25D0<- as.factor(bd$PVS25D0)
+
+bd_quest41 <- na.omit(bd) %>%
+  group_by(PVS25D0) %>%
+  summarize(Min= min(PQCONC), Max= max(PQCONC), Mean = mean(PQCONC),MEDIANA= median(PQCONC), SD = sd(PQCONC))%>%
+  ungroup()
+
+bd_quest41<- as.data.frame(bd_quest41)
+bd_quest41<-plyr::rename(bd_quest41, c("PVS25D0"="col"))
+
+
+bd_quest42 <- na.omit(bd) %>%
+  group_by(PVS25D72) %>%
+  summarize(Min= min(PQCONC), Max= max(PQCONC), Mean = mean(PQCONC),MEDIANA= median(PQCONC), SD = sd(PQCONC))%>%
+  ungroup()
+
+bd_quest42<- as.data.frame(bd_quest42)
+bd_quest42<-plyr::rename(bd_quest42, c("PVS25D72"="col"))
+
+
+quickmerge <- function(df1, df2) {
+  df1.names <- names(df1)
+  df2.names <- names(df2)
+  df2.add <- setdiff(df1.names, df2.names)
+  df1.add <- setdiff(df2.names, df1.names)
+  if(length(df2.add) > 0) {
+    for(i in 1:length(df2.add)) {
+      df2[df2.add[i]] <- NA
+    }
+  }
+  if(length(df1.add) > 0) {
+    for(i in 1:length(df1.add)) {
+      df1[df1.add[i]] <- NA
+    }
+  }
+  return(rbind(df1, df2))
+}
+
+sss <- quickmerge(bd_quest41,bd_quest42)
+
+sss[,-1]<- (round(sss[,-1],4)) #ARREDONDADO PARA 2 CASAS DECIMAIS
+
+attach(sss)
+colnames(sss)<-c("Variável", "Mínimo", "Máximo","Média","Mediana","Desvio Padrão")
+
+sss %>%
+  kbl(caption="Análise descritiva da variável Concentração de primaquina- 72 horas,com relação ao Status de Pvs25") %>%
+  add_header_above(c(" " = 1, "Concentração de primaquina" = 5),bold = TRUE) %>%
+  pack_rows(index = c("PVS25D0"= 2,"PVS25D72" = 2)) %>%
+  kable_classic(full_width = F,font_size = 10) %>%
+  kable_styling(latex_options = "HOLD_position") %>%
+  row_spec(0, bold = TRUE, italic = TRUE, hline_after = TRUE, font_size = 10, align = "c")
+
+```
+
+```{r echo=FALSE, fig.width= 5, fig.height=4,message=FALSE, warning=FALSE,fig.align='center'}
+bb1<-ggplot(na.omit(bd),aes(x = PVS25D0, y = PQCONC, fill= PVS25D0)) +
+    geom_boxplot(alpha = 0.7) + labs(fill="Gametócitos",
+       subtitle = bquote(italic('Momento inicial')), y = "Primaquina",
+       x = "Pvs 25") +  scale_fill_brewer(palette="BuPu") + theme(axis.title.x.bottom = element_blank()) 
+bb2<-ggplot(na.omit(bd),aes(x = PVS25D72, y = PQCONC, fill= PVS25D72)) +
+    geom_boxplot(alpha = 0.7) + labs(fill="Gametócitos", subtitle = bquote(italic('Após 72 horas')),x= "Pvs 25") +  scale_fill_brewer(palette="BuPu") + theme(axis.title.y = element_blank()) + theme(axis.title.x.bottom = element_blank())
+
+prow <- plot_grid( bb1 + theme(legend.position="none"),
+           bb2 + theme(legend.position="none"),
+           align = 'vh',
+           hjust = -1,
+           nrow = 1
+           )
+
+
+# add the legend to the row we made earlier. Give it one-third of the width
+# of one plot (via rel_widths).
+p <- plot_grid( prow, rel_widths = c(2, .2))
+
+x.grob <- textGrob("Pvs 25", 
+                   gp=gpar(fontsize=10))
+
+title.grob <- textGrob("Figura 20- Gráfico boxplot Concentração de primaquina com\nrelação ao Status de Pvs25", x = 0, hjust = 0,gp = gpar(fontsize = 11))
+
+grid.arrange(arrangeGrob(p, bottom = x.grob,top =title.grob))
+
+```
+
+Nesse sentido, com o propósito de responder o questionamento levantado no item 5, "Aqueles indivíduos que possuem maior concentração de primaquina tiveram maior redução de Pvs25?", utilizamos o teste Mann-Whitney (unilateral), para comparação de médias de dois grupos independentes. Desse modo assumimos como hipóteses de interesse:
+
+$H_0$: A mediana da Concentração de primaquina 72 horas no Status de Pvs 25 é igual à mediana da Concentração de primaquina 72 horas no Status de Pvs 25 negativo;
+
+$H_1$: A mediana da Concentração de primaquina 72 horas no Status de Pvs 25 positivo é maior do que a mediana da Concentração de primaquina 72 horas no Status de Pvs 25 negativo. 
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+
+#TESTANDO PRESSUPOSTO DE NORMALIDADE
+shapiro.test(bd$PQCONC[bd$PVS25D72 == "NEGATIVO"]) # p-value = 0.3205, não rejeito H0 DE NORMALIDADE
+shapiro.test(bd$PQCONC[bd$PVS25D72 == "POSITIVO"])# P VALOR ( 0.0003615) REJEITA HIPÓTESE NULA DE NORMALIDADE
+
+#TESTANDO PRESSUPOSTO DE NORMALIDADE
+shapiro.test(bd$PQCONC[bd$PVS25D0 == "NEGATIVO"]) # p-value =  < 2.2e-16 , REJEITA HIPÓTESE NULA DE NORMALIDADE
+shapiro.test(bd$PQCONC[bd$PVS25D0 == "POSITIVO"])# P VALOR ( 0.0002784) REJEITA HIPÓTESE NULA DE NORMALIDADE
+
+```
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE,fig.align="center"}
+will1=wilcox.test(PQCONC~PVS25D0, data = bd, alternative= "greater") #teste unilateral visando averiguar se média inicial> media final
+
+pppvaluewill1 = will1$p.value 
+metwill1=will1$method #teste unilateral visando averiguar se média inicial> media final
+
+will2=wilcox.test(PQCONC~PVS25D72, data = bd, alternative= "greater") #teste unilateral visando averiguar se média inicial> media final
+pppvaluewill2 = will2$p.value 
+metwill2 = will2$method
+
+##########################
+
+
+metodoswill<- c("Teste Mann-Whitney ","Teste Mann-Whitney ") 
+variaveisssutilizadaseill = c("Status Pvs 25- momento inicial", "Status Pvs 25- após 72 horas")
+PVALOR222will= c(pppvaluewill1,pppvaluewill2)
+
+tabelaquesta5will = data.frame(metodoswill,variaveisssutilizadaseill,PVALOR222will)
+names(tabelaquesta5will) = c("Métodos","Variáveis","P-Valores")
+tabelaquesta5will %>% 
+  dplyr::mutate_if(is.numeric, funs(as.character(signif(., 3)))) %>%
+  kbl(caption = "Teste Mann-Whitney para Concentração de primaquina- 72 horas") %>%
+  kable_classic_2(full_width = F) %>%
+  kable_styling(latex_options = "HOLD_position")
+
+```
+
+
+## Pergunta 6
+
+*"Verificar se os status de CYP2D6 (CYP2D6CAT) e POR (PORMUT) influenciam no número de recorrência clínica (RECIDIVACAT ou NRECORRENCIA). Exemplo: Indivíduos com CYP2D6 alterada possuem mais recorrências do que indivíduos com CYP2D6 normal? Indivíduos com POR mutada possuem mais recorrências do que POR nao-mutada?" - Texto elaborado pelas pesquisadoras.*
+
+Com o propósito de responder a pergunta, realizou-se primeiramente testes qui-quadrados de independência. Desse modo, analisamos se as variáveis (Recorrência de malária e Status de metabolização conjunto; Recorrencia de malária e Status de metabolização CYP2D6; Recorrência de malária e Status de mutação do gene POR) são dependentes ou independentes. Vale salientar que duas variáveis são independentes se a ocorrência de uma não afeta a ocorrência da outra. Nesse sentido, vale salientar as hipóteses consideradas nos testes realizados:
+
+$H_0$: A variável Recorrência de malária não está associado com a variável Status de metabolização/Status de mutação (independentes);
+
+$H_1$: A variável Recorrência de malária está associado com a variável Status de metabolização/Status de mutação (dependentes).
+
+```{r echo=FALSE, message=FALSE, warning=FALSE,fig.align="center"}
+#CYP E POR E RECORRENCIA DE MALARIA
+tabelachisq= table(new_df2$CYP2D6POR,new_df2$RECIDIVACAT)
+Tind = chisq.test(tabelachisq)
+PV = Tind$p.value
+
+
+#CYP E RECORRENCIA DE MALARIA
+tabelachisq1= table(df2$X1,df2$V4)
+Tind1 = chisq.test(tabelachisq1)
+PV1 = Tind1$p.value
+
+#POR E RECORRENCIA DE MALARIA
+tabelachisq2= table(df3$X1,df3$V4)
+Tind2 = chisq.test(tabelachisq2)
+PV2 = Tind2$p.value
+
+
+variTEST = c("Status de metabolização conjunta (CYP2D6/POR)", "Status de metabolização CYP2D6", "Status de mutação POR")
+pvaloreSX = c(PV, PV1, PV2)
+
+teste2222212 = data.frame(variTEST, pvaloreSX)
+names(teste2222212) = c("Variáveis", "P-Valores")
+teste2222212 %>% 
+  dplyr::mutate_if(is.numeric, funs(as.character(signif(., 3)))) %>%
+  kbl(caption = "Teste de independencia qui-quadrado com a variável Recorrência de Malária") %>%
+  kable_classic_2(full_width = F) %>%
+  kable_styling(latex_options = "HOLD_position")
+```
+
+
+```{r echo=FALSE, fig.align="center", fig.width= 5, fig.height=4, message=FALSE, warning=FALSE}
+
+ggplot(new_df2, aes(CYP2D6POR, fill = RECIDIVACAT)) +
+  geom_bar( color = '#cccccc',position="fill") +
+  scale_fill_manual(values=c('#9cd1f0','#368196',"#131047")) + theme(axis.text.x = element_text(angle = 30, hjust = 1))+
+  labs(x= "CYP2D6POR" ,y = "Percentual",fill = "Recorrência de malária",title = "Figura 21 - Gráfico de barras de Recorrência de malária\ncom relação a CYP/POR conjunto",size=10) + theme(plot.title = element_text(size=10))
+
+```
+
+**Recorrência clínica de malária, em relação ao Status de Metabolização CYP2D6:**
+
+A partir do gráfico de que relaciona as proporções relativas de recorrência de malária por status de metabolização CYP2D6.
+
+```{r echo=FALSE, fig.align="center", fig.width= 5, fig.height=4, message=FALSE, warning=FALSE}
+ggplot(df2, aes(X1, fill = V4)) +
+  geom_bar( color = '#cccccc',position="fill") +
+  scale_fill_manual(values=c('#9cd1f0','#368196',"#131047")) + theme(axis.text.x = element_text(angle = 20, hjust = 1))+
+  labs(x= "CYP2D6" ,y = "Percentual",fill = "Recorrência de malária",title = "Figura 22 - Gráfico de barras de Recorrência de malária\ncom relação a CYP2D6",size=10) + theme(plot.title = element_text(size=10)) 
+
+```
+
+```{r echo=FALSE, fig.align="center", fig.width= 5, fig.height=4, message=FALSE, warning=FALSE}
+ggplot(df2, aes(X1, fill = V4)) +
+  geom_bar( color = '#cccccc',position="fill") +
+  scale_fill_manual(values=c('#9cd1f0','#368196',"#131047")) + theme(axis.text.x = element_text(angle = 20, hjust = 1))+
+  labs(x= "POR" ,y = "Percentual",fill = "Recorrência de malária",title = "Figura 23 - Gráfico de barras de Recorrência de malária\ncom relação a POR",size=10) + theme(plot.title = element_text(size=10)) 
+```
+
+
+## Pergunta 7
+
+*"A eliminação dos gametócitos masculinos Pvs48 (PVS48D0 e PVS48D72) está associada com o status CYP2D6/POR (CYP2D6POR)?"- Texto elaborado pelas pesquisadoras.*
+
+Com o propósito de responder a pergunta realizamos testes de independencia qui-quadrado, visando verificar se existe associação entre as variáveis: Status dos gametócitos masculinos (Pvs48) no momento inicial e Status de metabolização conjunta/individual CYP2D6 e gene POR;  Status dos gametócitos masculinos (Pvs48) após 72 horas e Status de metabolização conjunta/individual CYP2D6 e gene POR. À vista disso, foi construído a Tabela 15 com os p-valores desses testes:
+
+```{r echo=FALSE, message=FALSE, warning=FALSE,fig.align="center"}
+#############CYP E POR CONJUNTO##############
+
+#CYP E POR E PVS48D0
+tabelachisq4= table(new_df2$CYP2D6POR,new_df2$PVS48D0)
+Tind4 = chisq.test(tabelachisq4)
+PV4 = Tind4$p.value
+
+#CYP E POR E PVS48D72
+tabelachisq5= table(new_df2$CYP2D6POR,new_df2$PVS48D72)
+Tind5 = chisq.test(tabelachisq5)
+PV5 = Tind5$p.value
+
+################cYP2D6###########
+
+#CYP E PVS48DBO0
+CHISQPERG7= table(df2$X1,df2$V5)
+CHISQPERG7TESTE = chisq.test(CHISQPERG7)
+CHISQPERG_PVALUE = CHISQPERG7TESTE$p.value
+
+#CYP  E PVS48D72
+CHISQPERG71= table(df2$X1,df2$V6)
+CHISQPERG7TESTE1 = chisq.test(CHISQPERG71)
+CHISQPERG_PVALUE1 = CHISQPERG7TESTE1$p.value
+
+
+
+###############POR###########
+
+#POR E PVS48D0
+CHISQPP22= table(df3$X1,df3$V5)
+CHISQPP22TESTE = chisq.test(CHISQPP22)
+CHISQPP_PVALOR = CHISQPP22TESTE$p.value
+
+#POR  E PVS48D72
+ULTIMOPOR= table(df3$X1,df3$V6)
+ULTIMOPORTEST = chisq.test(ULTIMOPOR)
+ULTIMOPOR_PVALUE = ULTIMOPORTEST$p.value
+
+rodape1= "PVS48D0 = Gametócitos masculinos em 0 horas"
+rodape2= "PVS48D72 = Gametócitos masculinos em 72 horas"
+
+var1quet7= c("CYP/POR conjunto e PVS48D0","CYP/POR conjunto e PVS48D72","CYP2D6 e PVS48D0","CYP2D6 e PVS48D72","POR e PVS48D0","POR e PVS48D72")
+
+QUESTAO7_PVALUES = c(PV4,PV5,CHISQPERG_PVALUE,CHISQPERG_PVALUE1,CHISQPP_PVALOR,ULTIMOPOR_PVALUE)
+
+
+questao7_tabela = data.frame(var1quet7,QUESTAO7_PVALUES)
+names(questao7_tabela) = c("Variáveis", "P-valores")
+questao7_tabela %>% 
+  dplyr::mutate_if(is.numeric, funs(as.character(signif(., 3)))) %>%
+  kbl(caption = "Análise dos status dos gametócitos masculinos com relação à CYP2D6/POR") %>%
+  kable_classic_2(full_width = F,font_size = 10) %>%
+  kable_styling(latex_options = "HOLD_position") %>%  
+  row_spec(0, bold = TRUE, italic = TRUE, hline_after = TRUE, font_size = 10, align = 'c')%>%
+  footnote(c(rodape1,rodape2))
+
+```
+
+
+
+# Conclusão
+
+Devido à natureza sensível dos dados utilizados, que envolvem informações de saúde de indivíduos participantes do estudo, apenas o código está sendo disponibilizado neste repositório. Os dados brutos não serão compartilhados para proteger a privacidade dos participantes e cumprir com os requisitos éticos e legais.
+
+Os scripts disponíveis podem ser utilizados para fins educacionais e como base para análises similares em outros contextos, respeitando-se as normas de confidencialidade e ética em pesquisa.
+
