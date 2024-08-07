@@ -28,9 +28,16 @@ loadpackages(c("ggcorrplot","haven","tinytex","scales","grid","tidyverse","ggpub
 
 ```
 
+\newpage
+
 # Introdução
- 
-O estudo “Resposta Terapêutica na Malária por Plasmodium vivax: Variabilidade Genética de Enzimas Metabolizadoras da Primaquina e o Clearance de Gametócitos” é uma pesquisa transversal desenvolvida em colaboração com um programa de pós-graduação em Ciências da Saúde, com apoio de uma fundação de renome na área de saúde. Este estudo visa analisar a frequência de polimorfismos nos genes CYP2D6 e POR e investigar como essas variações genéticas afetam a atividade da Primaquina, um medicamento utilizado na prevenção da malária, e o clearance de gametócitos em infecções por P. vivax. O objetivo é determinar se há evidências estatísticas de que polimorfismos nos genes CYP2D6 e POR influenciam a eficácia da Primaquina.
+
+A cliente Yanka Evellyn Alves Rodrigues Salazar orientada pela Dra. Taís Nóbrega de Sousa são responsáveis pela pesquisa “RESPOSTA TERAPÊUTICA NA MALÁRIA POR Plasmodium vivax: VARIABILIDADE GENÉTICA DE ENZIMAS METABOLIZADORAS DA PRIMAQUINA E O CLEARANCE DE GAMETÓCITOS”, um estudo transversal elaborado juntamente com Programa de Pós-Graduação em Ciências da Saúde. Sendo a fundação responsável o Instituto René Rachou (Fundação Oswaldo Cruz).
+
+A literatura nos traz diversos fatores que podem influenciar a falha terapêutica, em muitos estudos de tratamento da malária (doença infecciosa causada pelo parasito do gênero Plasmodium). As mutações no gene POR tem potencial em alterar a atividade metabólica das CYPs, sabe-se também que a variabilidade genética dessas enzimas possui certa influência nos estágios assexuados de Plasmodium vivax (P. vivax), protozoário mais comum para disseminação de malária. Os gametócitos são as células germinativas eucarióticas, sendo os masculinos chamados de espermatócitos e os femininos de ovócito, na literatura não há muitos estudos sobre o efeito nos gametócitos por isto, nossos clientes sintetizaram um estudo que será pioneiro na compreensão de como polimorfismos em enzimas envolvidas na metabolização de um medicamento para a prevenção de malária conhecido como Primaquina, para verificar se interferem na liberação de gametócitos  em infecções causadas por P. vivax.
+
+
+Os polimorfismos têm origem a partir de consequências das mutações, sendo elas variações genéticas. Um ponto que pode influenciar os polimorfismos em CYP2D6 é a enzima que está responsável pela metabolização de Primaquina, e em POR na atividade da Primaquina sobre os gametócitos de P. vivax. Neste trabalho, pretende-se analisar a frequência de polimorfismos nos genes CYP2D6 e POR a partir da amostra colhida pelas clientes. Outro ponto é verificar a influência dos polimorfismos em CYP2D6 na atividade de gametócitos da Primaquina em indivíduos infectados por P. vivax. Por fim, pretende-se elucidar se há evidências estatísticas que o polimorfismo no gene POR interfere na atividade de gametócitos da Primaquina.
 
 ## Objetivos Gerais do estudo
 
@@ -45,6 +52,9 @@ Avaliar a influência de polimorfismos em CYP2D6, principal enzima responsável 
 3. Determinar se polimorfismos no gene POR interferem na atividade gametocitocida da PQ.
 
 
+
+\newpage
+
 # Metodologia
 
 ## Dados
@@ -53,29 +63,22 @@ O banco de dados foi composto por 100 indivíduos e 35 variáveis, totalizando u
 
 Antes do início das análises, vale salientar que conforme orientação das nossas clientes, as variáveis númericas (Gametócitos femininos no momento inicial (QPVS25D0), Gametícitos feminínos no momento 72 horas (QPVS25D72), Razão de Pvs 25 (QPVS25D72/D0) e Concentração de primaquina (ng/mL) em 72 horas (PQCONC)) foram transformadas na escala logarítimo na base 10. Essas transformações foram realizadas com base na literatura trazida pelas pesquisadoras.
 
-## Descrição das Variáveis:
+Uma breve descrição das variáveis utilizadas e sua faixa de valores são apresentadas abaixo para melhor compreensão dos resultados posteriormente:
 
-1. Razão de Pvs 25 (Eliminação de gametócitos): Mede a quantidade de gametócitos femininos maduros após 72 horas em relação ao momento inicial. Em escala logarítmica (base 10), varia de -5,000 a 3,848, onde valores mais altos indicam maior quantidade de gametócitos após 72 horas.
+A Razão de Pvs 25, foi obtida por meio da divisão da Quantidade  de gametócitos femininos maduros no momento de 72 horas, pela Quantidade de gametócitos femininos maduros no momento inicial. O termo Eliminação de gametócitos será usado como sinônimo da variável Razão de Pvs 25. Nos resultados realizou-se teste t pareado de comparação de médias visando averiguar se realmente houve diminuição na quantidade de gametócitos após 72 horas. Os valores da variável Razão de Pvs 25, em escala logarítima na base 10, vão de -5,000 à 3,848, e quanto mais alto o valor obtido maior a quantidade de gametócios no momento de 72 horas.
 
-2. Concentração de Primaquina (PQCONC): Quantifica a concentração do fármaco Primaquina no momento final da coleta. Varia de 1,431 a 2,565, com valores mais altos indicando maior concentração de Primaquina.
+A variável Concentração de primaquina (PQCONC), quantifica a concentração de medicação no momento final da coleta dos dados. Está variável de suma importância pois primaquina foi o fármaco utilizado para o tratamento de malária. A escala de valores para Concentração de primaquina varia de 1,431 à 2,565, sendo que valores mais altos indicam maior concentração deste fármaco no metabolismo do indivíduo no momento 72 horas. 
 
-3. Quantificação de Parasitos:
-- PV18SD0NORM: Quantidade de parasitos no momento inicial, variando de -5,000 a 7,327. Valores mais altos indicam maior concentração de parasitos. 
-- PV18SD72NORM: Quantidade de parasitos após 72 horas, variando de -5,000 a 5,292.
+A variável Quantificação de parasitos em 0 horas (PV18SD0NORM), mensura a Quantidade de parasitos de malária no momento inicial. A escala de valores para PV18SD0NORM varia de -5,000 à 7,327, sendo que valores mais altos indicam uma maior concentração de parasitos no organismo do indivíduo. A variável Quantificação de parasitos em 72 horas (PV18SD72NORM), avalia a quantidade de parasitos de malária após 72 horas, e seus valores vão de -5,000 à 5,292.
 
-4. Status de Metabolização: 
-- CYP2D6: Classificado como "Normal" ou "Alterada".
-- POR: Classificado como "Mutada" ou "Não-mutada".
-- CYP2D6/POR Conjunto: Classificado em quatro categorias:"Normal/Não-mutada", "Normal/Mutada", "Alterada/Não-mutada", "Alterada/Mutada".
-- Fenótipo CYP2D6: Classificado como "gPM" (metabolizador nulo), "gIM" (metabolizador intermediário), "gNM-S" (metabolização reduzida), "gNM-F" (metabolização normal), e "gUM" (metabolização ultrarrápida).
+O Status de metabolização CYP2D6 e POR, foi analisado de forma conjunta e individual. A variável Status de metabolização CYP2D6 possui duas categorias sendo elas: "Normal" e "Alterada". A variável Status de mutação do gene POR possui duas categorias: "Mutada" e "Não-mutada". Já a variável Status de metabolização conjunta (CYP2D6/POR) foi definida com quatro categorias: "Normal/Não-mutada", "Normal/Mutada", "Alterada/Não-mutada" e "Alterada/Mutada". Além disso, a variável CYP2D6 também foi definida quanto ao fenótipo, sendo a classificação feita em termos das categorias: "gPM" - metabolizador nulo, não há metabolização; "gIM" - metabolizador intermediário; "gNM-S" - metabolização reduzida ("gIM" e "gNM-S" apresentam metabolização reduzida), e "gNM-F" - metabolização normal; "gUM" - metabolização ultrarrápida.
 
-6. Status dos Gametócitos Masculinos:
-- PVS48D0: Presença ou ausência de gametócitos masculinos no início, classificado como "Positivo" ou "Negativo".
-- PVS48D72: Presença ou ausência de gametócitos masculinos após 72 horas, classificado como "Positivo" ou "Negativo".
+Também era de interesse da pesquisa analisar o status dos gametócitos masculinos, por isso utilizou-se as variáveis qualitativas: Indicativo de presença ou ausência de gametócitos masculinos em 0 horas (PVS48D0), e Indicativo de presença ou ausência de gametócitos masculinos em Pvs48/45 em 72 horas (PVS48D72). PVS48DO e PVS48D72 foram classificadas como: "Positivo" e "Negativo".
+
 
 ## Análise Exploratória
 
-Realizada com objetivo de conhecer as características e identificar padrões nos dados. Parte desse processo foi desenvolvido por meio da obtenção de medidas resumo (média, mediana, desvio padrão, máximo e mínimo), para as variáveis numéricas, e frequência relativa de cada um dos níveis das variáveis categóricas. Além disso, foram elaborados gráficos de dispersão, boxplots e histogramas visando um melhor entendimento das medidas de posição, tendência central e da disperão dos dados.
+Inicialmente foi sintetizada uma análise exploratória, com objetivo de conhecer as características e identificar padrões nos dados. Parte desse processo foi desenvolvido por meio da obtenção de medidas resumo (média, mediana, desvio padrão, máximo e mínimo), para as variáveis numéricas, e frequência relativa de cada um dos níveis das variáveis categóricas. Além disso, foram elaborados gráficos de dispersão, boxplots e histogramas visando um melhor entendimento das medidas de posição, tendência central e da disperão dos dados.
 
 Posteriormente, foi realizado o Teste de Shapiro-Wilk, para as variáveis numéricas (Idade, PQCONC, QPVS25D0, QPVS25D72, QPVS25D72/D0, PV18SD0NORM e PV18SD72NORM), com o propósito de verificar quais seguiam a distribuição normal. Por meio desse teste foi possível nortear os testes estatísticos a serem desenvolvidos, visando responder as perguntas formuladas pelas pesquisadoras.
 
@@ -118,9 +121,9 @@ Para avaliar se há influência das variáveis levatadas pelas pesquisadoras for
 
 Vale salientar que em todas as análises foram consideradas um nível de significância de 5% e utilizou-se o software R em sua extensão RStudio para obtenção dos resultados.
 
-# Resultados
+\newpage
 
-Devido à natureza sensível dos dados utilizados, que envolvem informações de saúde de indivíduos participantes do estudo. Nese tópico de resultados será apresentado apenas o código, sem a interpretação dos resultados.
+# Resultados
 
 ```{r fig.align="center", message=FALSE, warning=FALSE, include=FALSE}
 bd <- read_excel("bd.xlsx")
@@ -162,6 +165,7 @@ attach(novo_bd)
 novo_bd<- as.data.frame(novo_bd)
 ```
 
+Inicialmente aplicou-se teste de Shapiro Wilk para verificação da normalidade nas seguintes variáveis quantitativas numéricas : "Idade", "Recorrência de malária ", "Concentração de primaquina (72 horas)", "Quantificação absoluta de gametócitos femininos (momento inicial)", "Quantificação absoluta de gametócitos femininos (72 horas) ", "Razão de Pvs25 em 72 horas por 0 horas", "Quantificação absoluta de parasitos (72 horas) ". Para todas as variáveis não rejeita-se a hipotese de normaldade. (Valor-p<0,05).
 
 ```{r fig.align="center", message=FALSE, warning=FALSE, include=FALSE}
 #teste de normalidade
@@ -190,6 +194,7 @@ table1 %>%
 
 ```
 
+Para a verificação da utilização do termo "Eliminação de gametócitos" realizou-se o teste t-pareado unilateral para comparação das médias das variáveis “Quantificação absoluta de gametócitos femininos maduros em 0 horas” e “Quantificação absoluta de gametócitos femininos maduros em 72 horas”.
 
 Hipóteses:
 
@@ -203,12 +208,15 @@ metócitos femininos maduros em 0 horas” > média final e “Quantificação a
 # Teste t pareado
 #ps realizei transformação de gatcitos: colunas não normais
 
+
 d=bd$QPVS25D0-bd$QPVS25D72
 testet1=t.test(d,alternative= "greater") #teste unilateral visando averiguar se média inicial> media final
 
 pvalor1 = testet1$p.value #3.10176e-20
 
 ```
+
+P valor < 0,001, logo há evidencias de que, após 72 horas, houve uma diminuição estatísticamente significante da quantidade de gametocitos femininos maduros. Assim, testificando que o termo "eliminação de gametócitos" pode ser usado como sinônimo da variável "Razão de Pvs25". Na figura 1 observa-se que a média de gametócitos femininos no momento de 72 horas está centrada em valores menor do que a média de gametócitos femininos no momento inicial.
 
 
 ```{r echo=FALSE, fig.height=4, fig.width= 5, message=FALSE, warning=FALSE,fig.align='center'}
@@ -233,8 +241,10 @@ gridExtra::grid.arrange(hist1, hist2, nrow = 1, left = textGrob("Densidade", rot
 
 ## Análise descritiva
 
-Foi sintetizada uma análise descritiva para compreender melhor o comportamento das variáveis do banco de dados. Para isto foram realizadas análises gráficas, tabelas com medidas resumo ou teste de hipóteses cruzando variáveis de interesse, como pode-se ver a seguir:
+Foi sintetizada uma análise descritiva para compreender melhor o comportamento das variáveis do banco de dados. Para isto foram realizadas análises gráficas, tabelas com medidas resumo ou teste de hipóteses cruzando variáveis de interesse, como pode-se ver a seguir. 
  
+A Figura 2 e a Tabela 1 apresentam a análise descritiva das variveis sexo e idade. Desta forma observa-se que a idade média e mediana do grupo feminino é maior que a idade do grupo masculino. A idade média é de 41,90 anos e o desvio padrão 9,49 anos do grupo feminino, quanto ao grupo masculino a idade média é de 31,58 anos e o desvio padrão 10,29 anos.
+
 
 ```{r echo=FALSE, fig.align="center", fig.height=3.5, fig.width=5, message=FALSE, warning=FALSE}
 bd$SEXO<-as.factor(bd$SEXO)
@@ -271,6 +281,7 @@ $H_0$: A mediana da Idade masculina é igual à mediana da Idade feminina;
 
 $H_1$: A mediana da Idade masculina é diferente à mediana da Idade feminina.
 
+O p-valor obtido foi de 0,071, logo há evidências de que a mediana das idades, considerando os níveis do sexo (masculino e feminino), não são estatísticamente diferentes.
 
 ```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
 #TESTANDO PRESSUPOSTO DE NORMALIDADE
@@ -326,6 +337,10 @@ testes1 %>%
 
 ```
 
+Analisando-se os p-valores da Tabela 2, é possível concluir que não rejeita-se a hipótese de independência entre as variáveis (Sexo, Local de infecção, ocupação e fenótipo CYP2D6) com recorrência de clínica malária. Para melhor visualização das proporções de Recorrência clínica de malária com relação as demais variáveis foi sintetizado os gráficos a seguir:
+
+A partir do Figura 3, que relaciona as proporções relativas de recorrência de malária por sexo, pode-se notar que não há grande diferença entre os tipos de recorrência por sexo.
+
 ```{r echo=FALSE, fig.align="center", fig.height=3.5, fig.width=5, message=FALSE, warning=FALSE}
 bd$RECIDIVACAT<-as.factor(bd$RECIDIVACAT)
 bd$RECIDIVACAT<-factor(bd$RECIDIVACAT, levels=c("NR","R","MR"),labels=c("Sem ocorrência","Uma recorrência", "Múltiplas recorrências"))
@@ -338,6 +353,8 @@ ggplot(bd, aes(SEXO, fill = RECIDIVACAT)) +
 
 
 ```
+
+Observando-se o Figura 4 que relaciona Recorrência clínica de malária em relação ao Fenótipo CYP2D6 percebe-se que o Fenótipo gNM-F com maior proporção seria o de pelo menos uma recorrência de malária, já o que possui maior recorrência múltipla  é o Fenótipo gNM-S.
 
 ```{r echo=FALSE, fig.align="center", fig.height=3.5, fig.width=5, message=FALSE, warning=FALSE}
 bd$CYP2D6FENOTIPO<-as.factor(bd$CYP2D6FENOTIPO)
@@ -353,6 +370,7 @@ ggplot(new_df, aes(CYP2D6FENOTIPO, fill = RECIDIVACAT)) +
 
 ```
 
+Partindo-se do Figura 5 de Recorrência clínica de malária, em relação ao provável local de infecção (Garimpo e outros locais de provável infecção), nota-se que não há muita diferença partindo da comparação da proporção de recorrência clínica com o possível local de infecção.
 
 ```{r echo=FALSE, fig.align="center", fig.height=3.5, fig.width=5, message=FALSE, warning=FALSE}
 
@@ -365,11 +383,14 @@ ggplot(bd, aes(PROVLOCALINFEC, fill = RECIDIVACAT)) +
 
 ```
 
+\newpage
 
 ## Pergunta 1
 
 " Indivíduos com status CYP2D6 alterada/POR mutada possuem menor redução de Pvs25 (0 horas para 72 horas; QPVS25D72/D0 ou QPVS25LOGD72/D0; alternativamente pode-se utilizar as variáveis medidas em cada tempo: QPVS25D0LOG e QPVS25D72LOG) quando comparados com indivíduos CYP2D6 normal/POR não-mutada?" - Texto elaborado pelas pesquisadoras.
 
+Com o propósito de responder à pergunta proposta, construiu-se a Tabela 3, com três vertentes de sumarização dos Status de metabolização conjunto ou individual das variáveis CYP2D6/POR com relação à Razão de Pvs25:
+    
 ```{r echo=FALSE, message=FALSE, warning=FALSE,fig.align="center"}
 ##tratamento banco de dados
 bd$CYP2D6POR<-as.factor(bd$CYP2D6POR)
@@ -482,6 +503,7 @@ graff1 + theme(plot.title = element_text(size=10))+
 ```
 
 
+
 ```{r echo=FALSE, fig.align="center", fig.height=3.5, fig.width=5, message=FALSE, warning=FALSE}
 graff2<-ggplot(df2, aes(x = X1, y = X2 , fill=X1 )) + 
   geom_boxplot(alpha = 0.7)+ labs(y = "Razão de Pvs25", x = "Status de Metabolização", fill= "CYP2D6",       title = "Figura 7 - Gráfico de boxplot da Razão de Pvs25 em relação\nao status de metabolização CYP2D6",size=10) +  scale_fill_brewer(palette="BuPu")
@@ -503,7 +525,9 @@ graff3 + theme(plot.title = element_text(size=10))+
 
 ```
 
-Hipóteses de interesse:
+Nesse sentido, através da análise construída com base nas Figuras 6, 7 e 8, e na Tabela 3, é possível visualizar que aparentemente não há diferenças significativas quanto ao valor mediano e a variabilidade da Razão de Pvs25, com relação às categorias dos Status de metabolização/mutação conjunto ou individual de CYP2D6/POR. Entretanto, para uma análise mais conclusiva, testes de média e mediana foram realizados, por meio dos métodos não-paraméticos: Teste de Kruskal-Walllis e Mann-Whitney. Em todos os testes realizados buscou-se analisar se existe ou não diferença significativa na média ou na mediana de eliminação de gametócitos.
+
+Desse modo assumimos como hipóteses de interesse:
 
 **1º teste)** Teste de Kruskall-Wallis:
 
@@ -560,6 +584,10 @@ tabela_tetste_quest2 %>%
   kable_classic_2(full_width = F) %>%
   kable_styling(latex_options = "HOLD_position")
 ```
+Os p-valores apresentados na Tabela 4, revelam que em nenhum dos casos a hipótese nula de igualdade das médias ou medianas da Razão de Pvs25, com relação às categorias dos Status de metabolização conjunto/individual de CYP2D6 e POR. Desse modo, pode-se concluir que não há evidências estatísticas de que "Indivíduos com status CYP2D6 alterada/POR mutada possuem menor redução de Pvs 25". - Texto elaborado pelas pesquisadoras.
+
+
+\newpage
 
 ## Pergunta 2
 
@@ -582,8 +610,9 @@ parasitahist<-ggplot(bd, aes(x= PV18SD0NORM)) + geom_histogram(aes(y = ..density
 
 gridExtra::grid.arrange(pvs25hist, parasitahist, ncol= 2)
 ```
+Por meio das Figuras 9 e 10, visualiza-se que o possível fator de confusão analisado (Quantidade de parasitos no momento inicial) possui uma distribuição diferente da distribuição da variável resposta analisada no item 1 (Razão de Pvs25). A relação dessas duas variáveis conjuntamente, será analisada por meio de testes estatísticos.
 
-Gráficos de dispersão para visualização da relação entre as variáveis Razão de Pvs25 (Eliminação de gametócitos) e Quantidade de Parasitos (0 horas), com relação aos status de metabolização conjunto e individuais:
+Posteriormente, sintetizou-se gráficos de dispersão para visualização da relação entre as variáveis Razão de Pvs25 (Eliminação de gametócitos) e Quantidade de Parasitos (0 horas), com relação aos status de metabolização conjunto e individuais:
 
 ```{r echo=FALSE,fig.height=3.5, fig.width=5, warning=FALSE,fig.align="center", message=FALSE}
 # variável considerada: PV18SD0NORMLOG
@@ -624,7 +653,9 @@ segundo_disp
 terca_disp
 ```
 
-Visando testar estatisticamente se exite uma associação entre as variáveis de interesse, postulou-se testes de independencia qui-quadrado, teste de correlação e testes de médias/medianas, os quais possuem as seguintes hipótese de interesse:
+Analisando as Figuras 11, 12 e 13, não é possível observar uma tendência linear na dispersão dos Status de metabolização CYP2D6/POR conjunto/individual com relação à Quantidade de parasitos no momento inicial e a Razão de Pvs25.
+
+Como comentado anteriormente, visando testar estatisticamente se exite uma associação entre as variáveis de interesse, postulou-se testes de independencia qui-quadrado, teste de correlação e testes de médias/medianas, os quais possuem as seguintes hipótese de interesse:
 
 **1º teste)** Teste qui-quadrado de independência
 
@@ -714,17 +745,17 @@ $H_1$: A mediana de Parasitos  é diferente em POR (Mutada e não mutada).
 
 ```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
 #TESTANDO PRESSUPOSTO DE NORMALIDADE- status de metabolização conjunto
-shapiro.test(bd$PV18SD0NORM[bd$CYP2D6POR == "AM"]) 
-shapiro.test(bd$PV18SD0NORM[bd$CYP2D6POR == "AN"]) 
-shapiro.test(bd$PV18SD0NORM[bd$CYP2D6POR == "NM"]) 
-shapiro.test(bd$PV18SD0NORM[bd$CYP2D6POR == "NN"])
+shapiro.test(bd$PV18SD0NORM[bd$CYP2D6POR == "AM"]) #0.1223
+shapiro.test(bd$PV18SD0NORM[bd$CYP2D6POR == "AN"]) #3.131e-05
+shapiro.test(bd$PV18SD0NORM[bd$CYP2D6POR == "NM"]) #1.059e-05
+shapiro.test(bd$PV18SD0NORM[bd$CYP2D6POR == "NN"]) #0.000372- rejeito hipótese nula de normalidade
 
 ##############################
 #cyp
-shapiro.test(bd$`QPVS25D72/D0`[bd$CYP2D6POR == "AM"]) 
-shapiro.test(bd$`QPVS25D72/D0`[bd$CYP2D6POR == "AN"]) 
-shapiro.test(bd$`QPVS25D72/D0`[bd$CYP2D6POR == "NM"]) 
-shapiro.test(bd$`QPVS25D72/D0`[bd$CYP2D6POR == "NN"]) 
+shapiro.test(bd$`QPVS25D72/D0`[bd$CYP2D6POR == "AM"]) #0.859
+shapiro.test(bd$`QPVS25D72/D0`[bd$CYP2D6POR == "AN"]) #0.1923
+shapiro.test(bd$`QPVS25D72/D0`[bd$CYP2D6POR == "NM"]) #0.1243
+shapiro.test(bd$`QPVS25D72/D0`[bd$CYP2D6POR == "NN"]) #0.004323
 ```
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
@@ -786,7 +817,9 @@ table111111 %>%
 
 ```
 
-Medidas resumos da quantidade de parasitos no momento inicial com relação ao status de metabolização conjunto (CYP2D6 e Por); status de metabolização CYP2D6; e status de mutação do gene POR.
+Pela Tabela 5, observa-se que o único teste que resultou um p-valor significativo foi o teste de Spearman	sobre Razão de Pvs25 (Gametócitos) e Quantidade de Parasitos no momento inicial (Parasitos), assim é possível concluir que há evidências de que essas variáveis são correlacionadas (associadas entre si). Desse modo, esse quesito indica que a variável Quantidade de parasitos (0 horas) é um possível fator de confusão para as análises construídas no item 1. Contudo, outras analises serão realizadas visando verificar a relação dessa variável com Status de metabolização CYP2D6/POR individual/conjunto.
+
+A seguir se encontra a Tabela  6 com as medidas resumos da quantidade de parasitos no momento inicial com relação ao status de metabolização conjunto (CYP2D6 e Por); status de metabolização CYP2D6; e status de mutação do gene POR.
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE,fig.align="center"}
 
@@ -846,7 +879,7 @@ varios_bd %>%
 
 A ideia dos modelos de regressão construidos é averiguar a contribuição da adição da variável "Quantidade de parasitos (momento inicial)" nos modelos, antes explicados apenas pelas variáveis status de metabolização/mutação CYP2D6 e POR.
 
-Nesse sentido, foram sintetizados seis modelos de Regressão linear múltipla. Em dois desses modelos não foi obtido nenhuma variável explicativa significativa no modelo. Vale salientar que os dois modelos, construídos sem nenhuma variável explicativa significativa, eram explicados apenas pelas variáveis explicativas: Status de Metabolização CYP2D6;e Status de Mutação do gene POR.
+Nesse sentido, foram sintetizados seis modelos de Regressão linear múltipla. Em dois desses modelos não foi obtido nenhuma variável explicativa significativa no modelo.Vale salientar que os dois modelos, construídos sem nenhuma variável explicativa significativa, eram explicados apenas pelas variáveis explicativas: Status de Metabolização CYP2D6;e Status de Mutação do gene POR.
 
 A seguir segue os quatro modelos que possuem pelo menos uma variável explicativa significativa para explicar a média da Eliminação de gametócitos:
 
@@ -1011,6 +1044,9 @@ tab_adj %>%
 
 ```
 
+A partir da Tabela 7 conseguimos analisar a contribuição da variável Quantidade de Parasitas no momento inicial  (Parasita) para os modelos de regressão com algum coeficiente significativo. À vista disso, é possível concluir que os modelos que contavam com a adição dessa variável explicativa, obtiveram valores maiores do coeficiente de determinação ajustado.Testamos também o pressuposto de nomalidade dos resíduos dos modelos construídos, e quanto a análise dos p-valores, observou-se que o Modelo 1 foi o único que teve o pressuposto de normalidade dos resíduos rejeitado (p valor < 0,05).
+
+Portanto, sumarizando os resultados obtidos na Tabela 7, é possível concluir que a variável Quantidade de parasitas no momento inicial gera uma melhora na capacidade explicativa dos modelos de regressão. No entanto, importa salientar que essa melhora não é tão significativa em termos estatísticos, haja vista que o coeficiente de correlação da relação das variáveis númericas Quantidade de parasitas no momento inicial e Razão de Pvs25 é -0,433, indicando uma correlação moderada entre as variáveis.
 
 
 ```{r message=FALSE, warning=FALSE, include=FALSE}
@@ -1036,11 +1072,14 @@ tab_norm_residuos %>%
   footnote(c(fooodnote))
 ```
 
+
+\newpage
+
 ## Pergunta 3
 
 "Avaliar se sexo e idade dos pacientes são fatores de confusão nas análises de associação entre status CYP/POR e eliminação de gametócitos realizadas no item 1." - Texto elaborado pelas pesquisadoras.
 
-Com o propósito de visualizar se as variáveis Sexo e Idade são fatores de confusão nos resultados obtidos no item 1:
+Com o propósito de visualizar se as variáveis Sexo e Idade são fatores de confusão nos resultados obtidos no item 1, primeiramente foram construídos boxplots (Figura 14 e 15) com as variáveis Sexo e Idade:
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE,fig.height=3.5, fig.width=5,fig.align="center"}
 
@@ -1065,7 +1104,11 @@ id_cyp_por+theme(plot.title = element_text(size=10))
 
 ```
 
-Visando testar estatisticamente se exite uma associação entre as variáveis, postulou-se testes estatísticos, cujos resultados foram apresentados na Tabela 8. As hipóteses de interesse dos testes realizados foram:
+Analisando a Figura 14, visualiza-se que aparentemente a mediana da Razão de Pvs25 do grupo feminino não parece ser diferente da Razão de Pvs25 do grupo masculino. Além disso, observa-se uma certa similaridade na variabilidade dos grupos. Vale salientar que testes estatísticos serão desenvolvidos posteriormente, visando verificar se existem diferenças significativas entre os grupos de análise. 
+
+Quanto à Figura 15, como a variável Idade foi plotada em termos de uma variável categórica de quatro níveis será realizado nessa sessão, um teste de Kruskal-Wallis com o propósito de proporcionar uma análise mais acertiva da relação dessas duas variáveis. 
+
+Como comentado anteriormente, visando testar estatisticamente se exite uma associação entre as variáveis, postulou-se testes estatísticos, cujos resultados foram apresentados na Tabela 8. As hipóteses de interesse dos testes realizados foram:
 
 **1º teste)** Teste qui-quadrado de independência:
 
@@ -1166,6 +1209,7 @@ tabelaquesta3 %>%
 
 ```
 
+Os p-valores apresentados na Tabela 8, revelam que em nenhum dos casos há uma associação significativa entre as variáveis. Apesar dos resultados dos testes de hipótese, ainda não é possível concluir que as variáveis Idade e Sexo não são fatores de confusão dos resultados obtidos no item 1. À vista disso, construiu-se modelos de regressão múltipla, com o propósito de averiguar a contribuição das variáveis Idade e Sexo ao modelo explicado apenas pela variável Status de metabolização CYP2D6/POR.
 
 ### Regressão múltipla
 
@@ -1230,10 +1274,12 @@ modelo4= lm(data= new_df2,`QPVS25D72/D0`~ CYP2D6POR +IDADE+SEXO)
 
 #teste normalidade dos residuos
 norm44=shapiro.test(residuals(modelo4))
-pvalornorm444= norm44$p.value 
+pvalornorm444= norm44$p.value #Valor P do teste=0.01851539 é pequeno rejeita-se rejeita-se a hipótese de normalidade dos resíduos e, por consequência, conclui-se que os erros não são normalmente distribuídos.
+
+
 ```
 
-Além disso, com o propósito de avaliar a contribuição das variáveis Sexo e Idade para o modelo de regressão múltipla do item 1:
+Além disso, com o propósito de avaliar a contribuição das variáveis Sexo e Idade para o modelo de regressão múltipla do item 1, a Tabela 9 foi construída, com os coficientes de deteminação ajustado dos dois modelos:
 
 ```{r message=FALSE, warning=FALSE, include=FALSE}
 #modelo de regressão
@@ -1245,7 +1291,9 @@ norm4=shapiro.test(residuals(modelo4))
 testereg4=summary(modelo4)
 radj4=testereg4$adj.r.squared
 
+
 r_ajustados2 = c(radj,radj4)
+
 
 tab_adj2 = data.frame(r_ajustados2)
 names(tab_adj2) = c("Coeficiente de determinação ajustado")
@@ -1257,11 +1305,15 @@ tab_adj2 %>%
   kable_styling(latex_options = "HOLD_position") %>%  
   row_spec(0, bold = TRUE, italic = TRUE, hline_after = TRUE, font_size = 10, align = 'c') 
 ```
-P
+Portanto, é possível concluir que além da falta de ajuste do modelo, a adição das variáveis Sexo e Idade é responsável pela diminuição da explicação de Razão de Pvs25, tendo em vista que o coeficiente de determinação do modelo construído com as novas variáveis, é menor do que o coeficiente de determinação construído apenas com a variável CYP/POR conjunto.
+
+\newpage
+
 ## Pergunta 4
 
 "Identificar se a concentração de primaquina em 72 horas (PQCONC ou PQCONCLOG) é influenciada pelo fenótipo de CYP2D6 (CYP2D6FENOTIPO), POR (PORMUT) e o status conjunto CYP2D6/POR (CYP2D6POR). Exemplo: Indivíduos com fenótipo gPM possuem maior concentração de primaquina do que indivíduos gNM-F?" - Texto elaborado pelas pesquisadoras.
 
+Haja vista a variável Concentração de primaquina em 72 horas (PQCON) construiu-se boxplots,com o propósito de identificar se essa variável é influenciada pelas variáveis: Fenótipo de CYP2D6 (CYP2D6FENOTIPO), Status de mutação do gene POR (PORMUT), e Status de metabolização conjunto CYP2D6/POR (CYP2D6POR). Nesse sentido as Figuras 16,17 e 18 foram construídas:
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE,fig.height=3.2, fig.width=4.8,fig.align="center"}
 # Graficos
@@ -1314,7 +1366,9 @@ prima_estato
 
 ```
 
-Assumimos como hipóteses de interesse:
+Nos gráficos 16, 17 e 18 é possível visualizar que aparentemente não há diferenças significativas quanto ao valor mediano e a variabilidade da Concentração de primaquina após 72 horas com relação às categorias das variáveis de interesse (CYP2D6FENOTIPO, PORMUT e CYP2D6POR). Entretanto, para uma análise mais conclusiva, testes de média e mediana foram realizados, por meio dos métodos não-paraméticos: Teste de Kruskal-Walllis e Mann-Whitney. Em todos os testes realizados buscou-se analisar se existe ou não diferença significativa na média ou na mediana da concentração de primaquina.
+
+Desse modo, assumimos como hipóteses de interesse:
 
 **1º teste)** Teste de Kruskall-Wallis:
 
@@ -1364,7 +1418,6 @@ TESTESQUEST77 %>%
   kable_classic_2(full_width = F) %>%
   kable_styling(latex_options = "HOLD_position")
 ```
-
 Os p-valores apresentados na Tabela 10, revelam que em nenhum dos casos houve rejeição da hipótese nula de igualdade das médias ou medianas de Concentração de primaquina 72 horas. Essa análise é um indício de que talvez as variáveis analisadas (Status de metabolização conjunto CYP2D6/POR, Fenótipo CYP2D6,Status de mutação do ge POR) não exercem influência sobre a variável PQCONC. Entretanto, para uma análise mais precisa, foi postulado modelos de regressão multipla com o propósito de verificar a contribuição de cada variável na explicação de um modelo cuja variável resposta é Concentração de primaquina após 72 horas.
 
 ### Regressão Múltipla
@@ -1519,12 +1572,16 @@ tab_adjjj2 %>%
 
 ```
 
+A partir da Tabela 11 pode-se analisar se as variáveis CYP2D6FENOTIPO e CYP/POR contribuem para um melhor ajuste dos modelos. Além disso, é possível avaliar a contribuição da adição das variáveis Sexo e Idade nos modelos. Nesse sentido, como os coeficientes de determinação ajustados são relativamente muito pequenos, é possível concluir que aparentemente essas não são variáveis influentes para explicação da variável Concentração de primaquina em 72 horas. 
+
+\newpage
 
 ## Pergunta 5
 
 *"Correlacionar a concentração de primaquina (PQCONC ou PQCONCLOG) com a redução de Pvs25 (QPVS25D72/D0 ou QPVS25LOGD72/D0; alternativamente pode-se utilizar as variáveis medidas em cada tempo: QPVS25D0LOG e QPVS25D72LOG). Exemplo: Aqueles indivíduos que possuem maior concentração de primaquina tiveram maior redução de Pvs25? Essas análises também podem ser realizadas considerando apenas presença/ausência de gametócitos em D0 e D72 (PVS25D0 e PVS25D72)"- Texto elaborado pelas pesquisadoras.*
 
-Primeiramente foi verificado, através de um diagrama de dispersão, se as variáveis Concentração de primaquina (ng/mL; fármaco estudado) em 72 horas e Razão de Pvs 25  apresentam algum padrão de linearidade, pois caso se confirme pode-se utilizar o ceficiente de correlação linear de Pearson para mensurar tal correlação. 
+
+Primeiramente foi verificado, através de um diagrama de dispersão, se as variáveis Concentração de primaquina (ng/mL; fármaco estudado) em 72 horas e Razão de Pvs 25  apresentam algum padrão de linearidade, pois caso se confirme pode-se utilizar o ceficiente de correlação linear de Pearson para mensurar tal correlação. Nesse sentido, por meio da Figura 19, é possível verificar que as variáveis aparentemente não mostram padrão linear e sugere que não há correlação.
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE,fig.height=3.5, fig.width= 5}
 
@@ -1547,7 +1604,9 @@ $H_0$: A correlação entre as variáveis, Concentração de primaquina (ng/mL; 
 
 $H_1$: A correlação entre as variáveis, Concentração de primaquina (ng/mL; fármaco estudado) em 72 horas e Razão de Pvs 25 (72 horas - 0 horas), não é nula.
 
-Foi orientado também conduzir a análise tendo em vista a relação das variáveis: Concentração de primaquina (ng/mL; fármaco estudado) em 72 horas e Presença/ausência de gametócitos nos momentos 0 horas e 72 horas. Nesse sentido, a Tabela 12 foi construída visando obter uma descrição de como a variável Concentração de primaquina- 72 horas se distribui, tendo em vista os níveis das vaiáveis: Status de Pvs 25 no momento inicial e Status de Pvs 25 após 72 horas. 
+Analisando o p-valor obtido no teste (0,2485) não rejeita-se a hipótese nula do teste de Correlação de Spearman. Assim, não podemos concluir que indivíduos que apresentam uma maior razão de Pvs 25, possuem uma maior concentração de primaquina em 72 horas, tendo em vista que as variáveis não são variáveis correlacionadas.
+
+Foi orientado também conduzir a análise tendo em vista a relação das variáveis: Concentração de primaquina (ng/mL; fármaco estudado) em 72 horas e Presença/ausência de gametócitos nos momentos 0 horas e 72 horas. Nesse sentido, a Tabela 12 foi construída visando obter uma descrição de como a variável Concentração de primaquina- 72 horas se distribui, tendo em vista os níveis das vaiáveis: Status de Pvs 25 no momento inicial e Status de Pvs 25 após 72 horas. O resultado de maior destaque na tabela seria o aumento da variabilidade do status Negativo de gametócitos, considerando os momentos 0 horas e 72 horas; tal variação é nítida na Figura 20.
 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE,fig.align="center"}
@@ -1658,12 +1717,12 @@ shapiro.test(bd$PQCONC[bd$PVS25D0 == "POSITIVO"])# P VALOR ( 0.0002784) REJEITA 
 ```{r echo=FALSE, message=FALSE, warning=FALSE,fig.align="center"}
 will1=wilcox.test(PQCONC~PVS25D0, data = bd, alternative= "greater") #teste unilateral visando averiguar se média inicial> media final
 
-pppvaluewill1 = will1$p.value 
+pppvaluewill1 = will1$p.value #0.803355
 metwill1=will1$method #teste unilateral visando averiguar se média inicial> media final
 
 will2=wilcox.test(PQCONC~PVS25D72, data = bd, alternative= "greater") #teste unilateral visando averiguar se média inicial> media final
-pppvaluewill2 = will2$p.value 
-metwill2 = will2$method
+pppvaluewill2 = will2$p.value #0.803355
+metwill2 = will2$method#0.803355
 
 ##########################
 
@@ -1681,7 +1740,9 @@ tabelaquesta5will %>%
   kable_styling(latex_options = "HOLD_position")
 
 ```
+Analisando a Tabela 13, é possível concluir que a Concentração mediana de primaquina (72 horas) é a mesma para status negativo e positivo de Pvs 25,tanto no momento incial quanto no final. Dessa forma, não pode-se afirmar que indivíduos que possuem maior concentração de primaquina tiveram maior redução de Pvs25.
 
+\newpage
 
 ## Pergunta 6
 
@@ -1722,7 +1783,9 @@ teste2222212 %>%
   kable_classic_2(full_width = F) %>%
   kable_styling(latex_options = "HOLD_position")
 ```
+Analisando a Tabela 14, há evidencias para não rejeitar a hipótese nula em todos os testes realizados. Desse modo, pode-se afirmar que há evidências de que as variáveis (Status de metabolização conjunta, Status de metabolização CYP2D6 e Status de mutação POR) são independentes da variável Recorrência clínica de malária. Assim, não foi constatado que indivíduos com CYP2D6 alterada possuem mais recorrências do que indivíduos com CYP2D6 normal. Também não é possível afirmar que indivíduos com POR mutada possuem mais recorrências do que POR nao-mutada.
 
+Com o propósito de complentar a análise, três gráficos foram construídos (Figura 21, Figura 22 e Figura 23), visando visualizar as proporções relativas da variável Recorrência Clínica de malária com relação ao Status de metabolização conjunto e individual CYP2D6/POR.
 
 ```{r echo=FALSE, fig.align="center", fig.width= 5, fig.height=4, message=FALSE, warning=FALSE}
 
@@ -1732,7 +1795,6 @@ ggplot(new_df2, aes(CYP2D6POR, fill = RECIDIVACAT)) +
   labs(x= "CYP2D6POR" ,y = "Percentual",fill = "Recorrência de malária",title = "Figura 21 - Gráfico de barras de Recorrência de malária\ncom relação a CYP/POR conjunto",size=10) + theme(plot.title = element_text(size=10))
 
 ```
-
 **Recorrência clínica de malária, em relação ao Status de Metabolização CYP2D6:**
 
 A partir do gráfico de que relaciona as proporções relativas de recorrência de malária por status de metabolização CYP2D6.
@@ -1752,6 +1814,7 @@ ggplot(df2, aes(X1, fill = V4)) +
   labs(x= "POR" ,y = "Percentual",fill = "Recorrência de malária",title = "Figura 23 - Gráfico de barras de Recorrência de malária\ncom relação a POR",size=10) + theme(plot.title = element_text(size=10)) 
 ```
 
+\newpage
 
 ## Pergunta 7
 
@@ -1818,11 +1881,34 @@ questao7_tabela %>%
 
 ```
 
+Analisando os p-valores da Tabela 15 é possível concluir que em todos os casos, não rejeita-se a hipótese nula do teste qui-quadrado. Desse modo, não é possível realizar afirmações do tipo "A eliminação dos gametócitos masculinos Pvs48 (PVS48D0 e PVS48D72) está associada com o status CYP2D6/POR (CYP2D6POR)", tendo em vista que não há evidências de que as variáveis são dependentes/associadas.
 
+\newpage
 
 # Conclusão
 
-Devido à natureza sensível dos dados utilizados, que envolvem informações de saúde de indivíduos participantes do estudo, apenas o código está sendo disponibilizado neste repositório. Os dados brutos não serão compartilhados para proteger a privacidade dos participantes e cumprir com os requisitos éticos e legais.
+Um ponto importante para ressaltar é que para todos os modelos de regressão múltipla foi sintetizado outros métodos como transformação de box-cox, e também modelos lineares generalizados em alguns casos com a distribuição Poisson, Gamma e Gamma inversa e os resultados obtidos traziam uma explicabilidade muito próxima do modelo de regressão linear múltiplo. De modo, como todos os ajustes de modelos não ficaram bem ajustados. Então decidiu-se manter os modelos de  mais sucinto entendimento, sendo estes os modelos de regressão linear múltipla.
 
-Os scripts disponíveis podem ser utilizados para fins educacionais e como base para análises similares em outros contextos, respeitando-se as normas de confidencialidade e ética em pesquisa.
+Quanto aos resultados obtidos, vale salientar que o obtivemos apenas um resultado significativo:
+
+- Pergunta 2: Essa pergunta tinha o intuito de avaliar se a parasitemia inicial (PV18SD0NORM) está associada com a quantidade de gametócitos, e se essa variável é um fator de confusão nas análises de associação entre Status CYP/POR e Eliminação de gametócitos realizadas no item 1. Nesse sentido, a associação entre as variáveis Razão de Pvs25 (Gametócitos) e Quantidade de Parasitos no momento inicial (Parasitos), foi testada através do teste de correlação de Spearman, sendo obtido evidências de uma correlação não nula entre as variáveis. Posteriormente essa correação foi mensurada: -0,433,  o que indica uma correlação moderada e negativa entre as variáveis Razão de Pvs25 e Quantidade de Parasitos no momento inicial.
+
+Outro resultado significativo obtido nesse item foi quanto aos modelos de regressão múltipla desenvolvidos com a variável resposta Razão de Pvs25, haja vista que os modelos explicados com as variáveis: Status de metabolização CYP2D6/POR conjunto e individual + variável Quantidade de parasitas no momento inicial, obtiveram maiores valores no coeficiente de determinação ajustado.
+
+Nas demais perguntas não foram obtidos resultados significativos. Um fato que prejudicou as análises foi o tamanho amostral, pois ao se realizar as análises múltiplas rejeitamos em todos os casos o pressuposto de normalidade. Desse modo, tivemos que proceder as análises por meio de testes não paramétricos, que são menos poderosos do que os testes paramétricos. À vista disso muitos resultados que poderiam ser significativos, foram refutados
+
+\newpage
+
+# Referências
+
+- Ministério da Saúde. Guia de tratamento da malária no Brasil. Disponível em: https://bvsms.saude.gov.br/bvs/publicacoes/guia_tratamento_malaria_brasil.pdf. Acesso em 18 de maio de 2022.
+
+- PIRES, Magda Carvalho et al. Estatística não paramétrica básica no software R: uma abordagem por resolução de problemas.Departamento de estatística. Universidade Federal de Minas Gerais, 2018.
+
+- SALLES, Paula Ferreira. Variabilidade Do CYP2D6 em cinco municípios endêmicos de malária por Plasmodium vivax na Amazônia brasileira. Universidade Federal Fluminense, Niterói, 2020.
+
+- SILVINO, Ana Carolina Rios.Recorrências na malária por Plasmodium vivax: variabilidade na enzima do complexo citocromo P450 2D6 (CYP2D6) e sua influência na falha terapêutica por primaquina. Belo Horizonte, 2019.
+
+- Suporte ao Minitab. Compreendendo os métodos não paramétricos. Disponível em : https://support.minitab.com/pt-br/minitab/19/help-and-how-to/statistics/nonparametrics/supporting-topics/understanding-nonparametric-methods/. Acessado em 18 de maio de 2022.
+
 
